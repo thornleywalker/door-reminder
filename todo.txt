@@ -1,0 +1,7 @@
+Hardware:
+- create footprints and symbols for used parts libraries
+	- 40-pin connector (FPC241H-040G10M)
+	- proximity sensor (336-5875-NDD)
+Software:
+- create class to draw images to screen
+- assign pins to functions
