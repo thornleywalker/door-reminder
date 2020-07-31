@@ -1,2 +1,3 @@
 /software/esp-idf/
 /software/esp/*/build/
+/hardware/part-libraries/sparkfun/
