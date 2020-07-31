@@ -1551,6 +1551,76 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </deviceset>
 </devicesets>
 </library>
+<library name="con-molex" urn="urn:adsk.eagle:library:165">
+<description>&lt;b&gt;Molex Connectors&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="87758-0216" urn="urn:adsk.eagle:footprint:8078475/1" library_version="5">
+<description>&lt;b&gt;2.00mm Pitch Milli-Grid™ Header, Through Hole, Vertical, 2 Circuits, 0.38µm Gold (Au) Selective Plating, Pocket Tray Packaging, Lead-Free&lt;/b&gt;&lt;p&gt;&lt;a href =http://www.molex.com/pdm_docs/sd/877580216_sd.pdf&gt;Datasheet &lt;/a&gt;</description>
+<wire x1="-0.85" y1="-1.9" x2="0.85" y2="-1.9" width="0.2032" layer="21"/>
+<wire x1="0.85" y1="-1.9" x2="0.85" y2="-0.4" width="0.2032" layer="21"/>
+<wire x1="0.85" y1="0.4" x2="0.85" y2="1.9" width="0.2032" layer="21"/>
+<wire x1="0.85" y1="1.9" x2="-0.85" y2="1.9" width="0.2032" layer="21"/>
+<wire x1="-0.85" y1="1.9" x2="-0.85" y2="0.4" width="0.2032" layer="21"/>
+<wire x1="-0.85" y1="-0.4" x2="-0.85" y2="-1.9" width="0.2032" layer="21"/>
+<wire x1="-0.85" y1="0.4" x2="-0.85" y2="-0.4" width="0.2032" layer="21" curve="-129.184564"/>
+<wire x1="0.85" y1="-0.4" x2="0.85" y2="0.4" width="0.2032" layer="21" curve="-129.184564"/>
+<pad name="1" x="0" y="-1" drill="0.9" diameter="1.27"/>
+<pad name="2" x="0" y="1" drill="0.9" diameter="1.27"/>
+<text x="-0.65" y="-1.75" size="0.3048" layer="21" font="vector">1</text>
+<text x="-0.62" y="-3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-0.62" y="2.54" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.25" y1="-1.25" x2="0.25" y2="-0.75" layer="51"/>
+<rectangle x1="-0.25" y1="0.75" x2="0.25" y2="1.25" layer="51"/>
+</package>
+</packages>
+<packages3d>
+<package3d name="87758-0216" urn="urn:adsk.eagle:package:8078894/1" type="box" library_version="5">
+<description>&lt;b&gt;2.00mm Pitch Milli-Grid™ Header, Through Hole, Vertical, 2 Circuits, 0.38µm Gold (Au) Selective Plating, Pocket Tray Packaging, Lead-Free&lt;/b&gt;&lt;p&gt;&lt;a href =http://www.molex.com/pdm_docs/sd/877580216_sd.pdf&gt;Datasheet &lt;/a&gt;</description>
+<packageinstances>
+<packageinstance name="87758-0216"/>
+</packageinstances>
+</package3d>
+</packages3d>
+<symbols>
+<symbol name="MV" urn="urn:adsk.eagle:symbol:6783/2" library_version="5">
+<wire x1="1.27" y1="0" x2="0" y2="0" width="0.6096" layer="94"/>
+<text x="2.54" y="-0.762" size="1.524" layer="95">&gt;NAME</text>
+<text x="-0.762" y="1.397" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="S" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="87758-0216" urn="urn:adsk.eagle:component:8079410/3" prefix="X" library_version="5">
+<description>&lt;b&gt;2 Pin - 2mm Dual Row Single Wafer, Vertical T/H HDR&lt;/b&gt;&lt;p&gt;
+Source: http://www.molex.com/pdm_docs/sd/877580616_sd.pdf</description>
+<gates>
+<gate name="-1" symbol="MV" x="-10.16" y="0" addlevel="always"/>
+<gate name="-2" symbol="MV" x="10.16" y="0" addlevel="always"/>
+</gates>
+<devices>
+<device name="" package="87758-0216">
+<connects>
+<connect gate="-1" pin="S" pad="1"/>
+<connect gate="-2" pin="S" pad="2"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:8078894/1"/>
+</package3dinstances>
+<technologies>
+<technology name="">
+<attribute name="MF" value="MOLEX" constant="no"/>
+<attribute name="MPN" value="87758-0216" constant="no"/>
+<attribute name="OC_FARNELL" value="unknown" constant="no"/>
+<attribute name="OC_NEWARK" value="94M1513" constant="no"/>
+<attribute name="POPULARITY" value="4" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -1575,6 +1645,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="C9" library="SparkFun-Capacitors" deviceset="100PF" device="-0402-50V-5%" value="100PF"/>
 <part name="L1" library="SparkFun-Coils" deviceset="INDUCTOR" device="-0402_TIGHT-2.7NH" value="2.7nH/?%/900mA/70mOhm"/>
 <part name="C10" library="SparkFun-Capacitors" deviceset="10NF" device="-0603-50V-10%" value="10nF"/>
+<part name="X1" library="con-molex" library_urn="urn:adsk.eagle:library:165" deviceset="87758-0216" device="" package3d_urn="urn:adsk.eagle:package:8078894/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -1636,6 +1707,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="C10" gate="G$1" x="-22.86" y="73.66" smashed="yes">
 <attribute name="NAME" x="-21.336" y="76.581" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="-21.336" y="71.501" size="1.778" layer="96" font="vector"/>
+</instance>
+<instance part="X1" gate="-1" x="53.34" y="-15.24" smashed="yes">
+<attribute name="NAME" x="55.88" y="-16.002" size="1.524" layer="95"/>
+<attribute name="VALUE" x="52.578" y="-13.843" size="1.778" layer="96"/>
+</instance>
+<instance part="X1" gate="-2" x="53.34" y="-20.32" smashed="yes">
+<attribute name="NAME" x="55.88" y="-21.082" size="1.524" layer="95"/>
+<attribute name="VALUE" x="52.578" y="-18.923" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -1855,6 +1934,30 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="17.78" y1="81.28" x2="-22.86" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="C10" gate="G$1" pin="1"/>
 <wire x1="-22.86" y1="78.74" x2="-22.86" y2="81.28" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="PROG_RX" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="U0RXD"/>
+<wire x1="63.5" y1="25.4" x2="88.9" y2="25.4" width="0.1524" layer="91"/>
+<label x="73.66" y="25.4" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="X1" gate="-1" pin="S"/>
+<wire x1="50.8" y1="-15.24" x2="22.86" y2="-15.24" width="0.1524" layer="91"/>
+<label x="25.4" y="-15.24" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PROG_TX" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="U0TXD"/>
+<wire x1="88.9" y1="22.86" x2="63.5" y2="22.86" width="0.1524" layer="91"/>
+<label x="73.66" y="22.86" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="X1" gate="-2" pin="S"/>
+<wire x1="22.86" y1="-20.32" x2="50.8" y2="-20.32" width="0.1524" layer="91"/>
+<label x="25.4" y="-20.32" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>

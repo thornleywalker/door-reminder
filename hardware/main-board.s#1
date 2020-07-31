@@ -651,6 +651,19 @@ Commonly used for small ceramic capacitors. Like our 0.1uF (http://www.sparkfun.
 <wire x1="2.59" y1="-1.45" x2="-2.59" y2="-1.45" width="0.0508" layer="39"/>
 <wire x1="-2.59" y1="-1.45" x2="-2.59" y2="1.45" width="0.0508" layer="39"/>
 </package>
+<package name="CAP-PTH-10MM">
+<description>2 PTH spaced 10mm apart</description>
+<wire x1="-0.5" y1="0.635" x2="-0.5" y2="0" width="0.2032" layer="21"/>
+<pad name="1" x="-5" y="0" drill="0.9" diameter="1.651"/>
+<pad name="2" x="5" y="0" drill="0.9" diameter="1.651"/>
+<text x="0" y="1" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;Name</text>
+<text x="0" y="-1" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;Value</text>
+<wire x1="-0.5" y1="0" x2="-0.5" y2="-0.635" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0.635" x2="0.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="0.5" y2="-0.635" width="0.2032" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-3.5" y2="0" width="0.2032" layer="21"/>
+<wire x1="0.5" y1="0" x2="3.5" y2="0" width="0.2032" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="CAP">
@@ -963,6 +976,98 @@ Commonly used for small ceramic capacitors. Like our 0.1uF (http://www.sparkfun.
 <technology name="">
 <attribute name="PROD_ID" value="CAP-14848" constant="no"/>
 <attribute name="VALUE" value="10uF" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="100PF" prefix="C">
+<description>&lt;h3&gt;100pF/0.1nF ceramic capacitors&lt;/h3&gt;
+&lt;p&gt;A capacitor is a passive two-terminal electrical component used to store electrical energy temporarily in an electric field.&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="CAP" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-0603-50V-5%" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-07883"/>
+<attribute name="VALUE" value="100pF"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402-50V-5%" package="0402">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-13458" constant="no"/>
+<attribute name="VALUE" value="100PF" constant="no"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-50V-5%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-13458"/>
+<attribute name="VALUE" value="100pF"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="10NF" prefix="C">
+<description>&lt;h3&gt;0.01uF/10nF/10,000pF ceramic capacitors&lt;/h3&gt;
+&lt;p&gt;A capacitor is a passive two-terminal electrical component used to store electrical energy temporarily in an electric field.&lt;/p&gt;
+
+CAP-09321</description>
+<gates>
+<gate name="G$1" symbol="CAP" x="0" y="0"/>
+</gates>
+<devices>
+<device name="-PTH-10MM-10000V-1-%" package="CAP-PTH-10MM">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-09321"/>
+<attribute name="VALUE" value="10nF"/>
+</technology>
+</technologies>
+</device>
+<device name="-0603-50V-10%" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-00867"/>
+<attribute name="VALUE" value="10nF"/>
+</technology>
+</technologies>
+</device>
+<device name="-0402T-25V-10%" package="0402-TIGHT">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CAP-14847" constant="no"/>
+<attribute name="VALUE" value="10nF" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -1462,10 +1567,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="C1" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" value="0.1uF"/>
 <part name="C2" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0603-25V-(+80/-20%)" value="0.1uF"/>
 <part name="C3" library="SparkFun-Capacitors" deviceset="1.0UF" device="-0603-16V-10%" value="1.0uF"/>
-<part name="L1" library="SparkFun-Coils" deviceset="INDUCTOR" device="-0402_TIGHT-2.0NH" value="2nH"/>
 <part name="C4" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0402-16V-10%" value="0.1uF"/>
 <part name="C5" library="SparkFun-Capacitors" deviceset="1.0UF" device="-0402-16V-10%" value="1.0uF"/>
 <part name="C6" library="SparkFun-Capacitors" deviceset="10UF" device="-0805-10V-10%" value="10uF"/>
+<part name="C7" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0402-16V-10%" value="0.1uF"/>
+<part name="C8" library="SparkFun-Capacitors" deviceset="1.0UF" device="-0402-16V-10%" value="1.0uF"/>
+<part name="C9" library="SparkFun-Capacitors" deviceset="100PF" device="-0402-50V-5%" value="100PF"/>
+<part name="L1" library="SparkFun-Coils" deviceset="INDUCTOR" device="-0402_TIGHT-2.7NH" value="2.7nH/?%/900mA/70mOhm"/>
+<part name="C10" library="SparkFun-Capacitors" deviceset="10NF" device="-0603-50V-10%" value="10nF"/>
 </parts>
 <sheets>
 <sheet>
@@ -1496,10 +1605,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <attribute name="NAME" x="70.104" y="84.201" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="70.104" y="79.121" size="1.778" layer="96" font="vector"/>
 </instance>
-<instance part="L1" gate="G$1" x="71.12" y="101.6" smashed="yes">
-<attribute name="NAME" x="72.39" y="104.14" size="1.778" layer="95" font="vector"/>
-<attribute name="VALUE" x="72.39" y="99.06" size="1.778" layer="96" font="vector" align="top-left"/>
-</instance>
 <instance part="C4" gate="G$1" x="78.74" y="104.14" smashed="yes">
 <attribute name="NAME" x="80.264" y="107.061" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="80.264" y="101.981" size="1.778" layer="96" font="vector"/>
@@ -1511,6 +1616,26 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="C6" gate="G$1" x="99.06" y="104.14" smashed="yes">
 <attribute name="NAME" x="100.584" y="107.061" size="1.778" layer="95" font="vector"/>
 <attribute name="VALUE" x="100.584" y="101.981" size="1.778" layer="96" font="vector"/>
+</instance>
+<instance part="C7" gate="G$1" x="71.12" y="119.38" smashed="yes">
+<attribute name="NAME" x="72.644" y="122.301" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="72.644" y="117.221" size="1.778" layer="96" font="vector"/>
+</instance>
+<instance part="C8" gate="G$1" x="81.28" y="119.38" smashed="yes">
+<attribute name="NAME" x="82.804" y="122.301" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="82.804" y="117.221" size="1.778" layer="96" font="vector"/>
+</instance>
+<instance part="C9" gate="G$1" x="91.44" y="119.38" smashed="yes">
+<attribute name="NAME" x="92.964" y="122.301" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="92.964" y="117.221" size="1.778" layer="96" font="vector"/>
+</instance>
+<instance part="L1" gate="G$1" x="71.12" y="101.6" smashed="yes">
+<attribute name="NAME" x="72.39" y="104.14" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="72.39" y="99.06" size="1.778" layer="96" font="vector" align="top-left"/>
+</instance>
+<instance part="C10" gate="G$1" x="-22.86" y="73.66" smashed="yes">
+<attribute name="NAME" x="-21.336" y="76.581" size="1.778" layer="95" font="vector"/>
+<attribute name="VALUE" x="-21.336" y="71.501" size="1.778" layer="96" font="vector"/>
 </instance>
 </instances>
 <busses>
@@ -1641,7 +1766,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="88.9" y1="109.22" x2="99.06" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="109.22" x2="106.68" y2="109.22" width="0.1524" layer="91"/>
 <wire x1="71.12" y1="106.68" x2="71.12" y2="109.22" width="0.1524" layer="91"/>
-<pinref part="L1" gate="G$1" pin="1"/>
 <pinref part="C4" gate="G$1" pin="1"/>
 <junction x="78.74" y="109.22"/>
 <pinref part="C5" gate="G$1" pin="1"/>
@@ -1649,6 +1773,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="C6" gate="G$1" pin="1"/>
 <junction x="99.06" y="109.22"/>
 <label x="104.14" y="109.22" size="1.778" layer="95"/>
+<pinref part="L1" gate="G$1" pin="1"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -1681,13 +1806,39 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="88.9" y1="99.06" x2="96.52" y2="99.06" width="0.1524" layer="91"/>
 <label x="91.44" y="99.06" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="C7" gate="G$1" pin="2"/>
+<pinref part="C8" gate="G$1" pin="2"/>
+<wire x1="71.12" y1="116.84" x2="81.28" y2="116.84" width="0.1524" layer="91"/>
+<pinref part="C9" gate="G$1" pin="2"/>
+<wire x1="81.28" y1="116.84" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
+<junction x="81.28" y="116.84"/>
+<wire x1="81.28" y1="116.84" x2="81.28" y2="114.3" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="114.3" x2="88.9" y2="114.3" width="0.1524" layer="91"/>
+<label x="83.82" y="114.3" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="C10" gate="G$1" pin="2"/>
+<wire x1="-22.86" y1="71.12" x2="-22.86" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="68.58" x2="-27.94" y2="68.58" width="0.1524" layer="91"/>
+<label x="-27.94" y="68.58" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="N$2" class="0">
 <segment>
 <pinref part="U1" gate="G$1" pin="VDDA"/>
 <wire x1="63.5" y1="96.52" x2="66.04" y2="96.52" width="0.1524" layer="91"/>
 <wire x1="66.04" y1="96.52" x2="66.04" y2="124.46" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="124.46" x2="88.9" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="124.46" x2="71.12" y2="124.46" width="0.1524" layer="91"/>
+<pinref part="C7" gate="G$1" pin="1"/>
+<wire x1="71.12" y1="124.46" x2="81.28" y2="124.46" width="0.1524" layer="91"/>
+<junction x="71.12" y="124.46"/>
+<pinref part="C8" gate="G$1" pin="1"/>
+<wire x1="81.28" y1="124.46" x2="91.44" y2="124.46" width="0.1524" layer="91"/>
+<junction x="81.28" y="124.46"/>
+<pinref part="C9" gate="G$1" pin="1"/>
+<wire x1="91.44" y1="124.46" x2="104.14" y2="124.46" width="0.1524" layer="91"/>
+<junction x="91.44" y="124.46"/>
 </segment>
 </net>
 <net name="N$3" class="0">
@@ -1696,6 +1847,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="U1" gate="G$1" pin="VDD3P3"/>
 <wire x1="63.5" y1="93.98" x2="71.12" y2="93.98" width="0.1524" layer="91"/>
 <pinref part="L1" gate="G$1" pin="2"/>
+</segment>
+</net>
+<net name="N$1" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="CAP1"/>
+<wire x1="17.78" y1="81.28" x2="-22.86" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="C10" gate="G$1" pin="1"/>
+<wire x1="-22.86" y1="78.74" x2="-22.86" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
