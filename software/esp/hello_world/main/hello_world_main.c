@@ -11,10 +11,24 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
+#include "wifi.h"
 
+#define TEST_WIFI "WeeFee"
+#define TEST_PASSWORD "P@ssw0rd"
 
 void app_main()
 {
+    // Initialize NVS
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK( ret );
+
+    wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
+
+#if false
     printf("Hello world!\n");
 
     /* Print chip information */
@@ -37,4 +51,6 @@ void app_main()
     printf("Restarting now.\n");
     fflush(stdout);
     esp_restart();
+#endif
+    
 }
