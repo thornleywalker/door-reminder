@@ -9,9 +9,9 @@ typedef struct user{
     bool has_coming_reminders;
 }user_t;
 
-typedef struct{
+typedef struct user_array{
     user_t users[MAX_USERS];
-    uint8_t len;
+    uint8_t length;
 }user_array_t;
 
 //initializes singleton
