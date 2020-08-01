@@ -1,5 +1,3 @@
-# Hello World Example
+# Door Reminder Board Software
 
-Starts a FreeRTOS task to print "Hello World"
-
-See the README.md file in the upper level 'examples' directory for more information about examples.
+The board software for ESP32 board.
