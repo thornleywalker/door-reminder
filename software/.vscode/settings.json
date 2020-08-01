@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "freertos.h": "c"
+        "freertos.h": "c",
+        "xlocale": "c",
+        "xstring": "c"
     }
 }
