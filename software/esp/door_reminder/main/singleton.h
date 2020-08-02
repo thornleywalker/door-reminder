@@ -1,7 +1,11 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
+#include <stdint.h>
+#include <stdbool.h>
+
 #define MAX_USERS 16
+#define MAX_UID_LENGTH 20
 
 typedef struct user{
     char* id;
@@ -10,9 +14,19 @@ typedef struct user{
 }user_t;
 
 typedef struct user_array{
-    user_t users[MAX_USERS];
+    user_t users[MAX_USERS+1];
     uint8_t length;
 }user_array_t;
+
+typedef struct bt_strength{
+    char* uid;
+    int32_t value;
+}bt_strength;
+
+typedef struct bt_connection_strengths{
+    bt_strength values[MAX_USERS];
+    uint8_t length;
+}bt_strengths_t;
 
 //initializes singleton
 // *** users array at 0 will be general device reminders (no user)
