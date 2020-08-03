@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "550306752934",
+    "firebase_url": "https://door-reminder-89e84.firebaseio.com",
+    "project_id": "door-reminder-89e84",
+    "storage_bucket": "door-reminder-89e84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:550306752934:android:b33f116426a2b61e1a8767",
+        "android_client_info": {
+          "package_name": "com.thornleywalker.doorsi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "550306752934-fpdl87igmblbvfup4cd3br1h368s4h1e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXfZofsr_54pdEwMjgeJALrj0s5C4PGxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "550306752934-fpdl87igmblbvfup4cd3br1h368s4h1e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

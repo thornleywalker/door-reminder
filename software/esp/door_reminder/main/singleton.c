@@ -1,6 +1,8 @@
 #include "singleton.h"
 
-static char* singleton_device_id;
+#define MAX_DEVICE_ID_LENGTH 20
+
+static char device_id[MAX_DEVICE_ID_LENGTH];
 static user_array_t users;
 static bt_strengths_t bt_strengths;
 
@@ -30,3 +32,5 @@ void singleton_init()
     users_init(&users);
     bt_strengths_init(&bt_strengths);
 }
+
+char* singleton_get_device_id() { return device_id; }
