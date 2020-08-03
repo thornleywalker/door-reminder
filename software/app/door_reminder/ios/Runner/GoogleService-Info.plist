@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>550306752934-savoo97c1ar7345ml2lq1k7nhf79sg27.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.550306752934-savoo97c1ar7345ml2lq1k7nhf79sg27</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBiRnnpJwOEa54zAvrVnJXdKxtnB9v_t44</string>
+	<key>GCM_SENDER_ID</key>
+	<string>550306752934</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.thornleywalker.doorsi</string>
+	<key>PROJECT_ID</key>
+	<string>door-reminder-89e84</string>
+	<key>STORAGE_BUCKET</key>
+	<string>door-reminder-89e84.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:550306752934:ios:3c8c44e0b47c8f2c1a8767</string>
+	<key>DATABASE_URL</key>
+	<string>https://door-reminder-89e84.firebaseio.com</string>
+</dict>
+</plist>
