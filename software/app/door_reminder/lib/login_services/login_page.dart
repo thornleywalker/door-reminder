@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:door_reminder/login_services/sign_up.dart';
+import 'package:door_reminder/login_services/sign_in.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/screens/home.dart';
 import 'package:door_reminder/main.dart';
@@ -12,16 +12,16 @@ enum AuthStatus {
   LOGGED_IN,
 }
 
-class RootPage extends StatefulWidget {
-  RootPage({this.auth});
+class LoginPage extends StatefulWidget {
+  LoginPage({this.auth});
 
   final BaseAuth auth;
 
   @override
-  State<StatefulWidget> createState() => new _RootPageState();
+  State<StatefulWidget> createState() => new _LoginPageState();
 }
 
-class _RootPageState extends State<RootPage> {
+class _LoginPageState extends State<LoginPage> {
   AuthStatus authStatus = AuthStatus.NOT_DETERMINDED;
   String _userId = "";
 
@@ -62,8 +62,7 @@ class _RootPageState extends State<RootPage> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        child:
-            CircularProgressIndicator(), //**Change to guy kicking bike gif */
+        child: CircularProgressIndicator(),
       ),
     );
   }
@@ -82,12 +81,7 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new MyHomePage(
-            title: 'RideOn',
-            userId: _userId,
-            auth: widget.auth,
-            logoutCallback: logoutCallback,
-          );
+          return new HomePage();
         } else
           return buildWaitingScreen();
         break;
