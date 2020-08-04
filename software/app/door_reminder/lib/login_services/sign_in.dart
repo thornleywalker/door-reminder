@@ -143,7 +143,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              showLogo(),
+              //showLogo(),
               showErrorMessage(),
               showEmailInput(),
               showPasswordInput(),
@@ -179,19 +179,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
   }
 
-  Widget showLogo() {
-    return new Hero(
-      tag: 'hero',
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
-        child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: 100.0,
-          child: Image.asset('lib/media/images/MotorbikePNG.png'),
-        ),
-      ),
-    );
-  }
+  // Widget showLogo() {
+  //   return new Hero(
+  //     tag: 'hero',
+  //     child: Padding(
+  //       padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+  //       child: CircleAvatar(
+  //         backgroundColor: Colors.transparent,
+  //         radius: 100.0,
+  //         child: Image.asset('lib/media/images/MotorbikePNG.png'),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget showEmailInput() {
     return Padding(
