@@ -39,12 +39,18 @@ class AccountRoute extends StatelessWidget {
               FutureBuilder(
                   future: mySingleton.userID(),
                   builder: (context, AsyncSnapshot<String> uid) {
-                    if (uid.hasData) return Text('UserID: ' + uid.data);
+                    if (uid.hasData)
+                      return Text('UserID: ' + uid.data);
+                    else
+                      return Text('Loading');
                   }),
               FutureBuilder(
                   future: mySingleton.email(),
                   builder: (context, AsyncSnapshot<String> email) {
-                    if (email.hasData) return Text('email: ' + email.data);
+                    if (email.hasData)
+                      return Text('email: ' + email.data);
+                    else
+                      return Text('Loading');
                   }),
               Text('Quest: To seek the holy grail'),
               Text('Favorite Color: Green'),

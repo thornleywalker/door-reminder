@@ -62,8 +62,8 @@ class Singleton {
     this._usernameSet = true;
   }
 
-  String username() {
-    if (!_usernameSet) verifyInfo();
+  Future<String> username() async {
+    if (!_usernameSet) await verifyInfo();
     return _username;
   }
 

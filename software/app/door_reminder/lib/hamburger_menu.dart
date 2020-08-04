@@ -18,12 +18,18 @@ class HamburgerMenu extends StatelessWidget {
           accountName: FutureBuilder(
               future: mySingleton.userID(),
               builder: (context, AsyncSnapshot<String> uid) {
-                if (uid.hasData) return Text('UserID: ' + uid.data);
+                if (uid.hasData)
+                  return Text('UserID: ' + uid.data);
+                else
+                  return Text('Loading...');
               }),
           accountEmail: FutureBuilder(
               future: mySingleton.email(),
               builder: (context, AsyncSnapshot<String> email) {
-                if (email.hasData) return Text('UserID: ' + email.data);
+                if (email.hasData)
+                  return Text('UserID: ' + email.data);
+                else
+                  return Text('Loading...');
               }),
           currentAccountPicture: CircleAvatar(
             backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
@@ -37,6 +43,8 @@ class HamburgerMenu extends StatelessWidget {
                       email.data.substring(0, 1).toUpperCase(),
                       style: TextStyle(fontSize: 40.0),
                     );
+                  else
+                    return Text('Loading...');
                 }),
           ),
         ),
