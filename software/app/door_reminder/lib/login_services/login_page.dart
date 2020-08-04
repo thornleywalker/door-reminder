@@ -81,7 +81,10 @@ class _LoginPageState extends State<LoginPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new HomePage();
+          return new HomePage(
+            auth: widget.auth,
+            logoutCallback: logoutCallback,
+          );
         } else
           return buildWaitingScreen();
         break;

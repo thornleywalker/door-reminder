@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 
 class Singleton {
@@ -25,5 +26,69 @@ class Singleton {
     return logoutCallback;
   }
 
-  void clearSingleton() {}
+  void clearSingleton() {
+    deleteEmail();
+    deleteUserID();
+    deleteUsername();
+  }
+
+  //user information
+  String _userID;
+  bool _userIDSet = false;
+  String _email;
+  bool _emailSet = false;
+  String _username;
+  bool _usernameSet = false;
+
+  Future<void> verifyInfo() async {
+    var currUser = await FirebaseAuth.instance.currentUser();
+    setEmail(currUser.email);
+    setUserID(currUser.uid);
+    setUsername(currUser.displayName);
+  }
+
+  void setEmail(String email) {
+    this._email = email;
+    this._emailSet = true;
+  }
+
+  void setUserID(String uid) {
+    this._userID = uid;
+    this._userIDSet = true;
+  }
+
+  void setUsername(String username) {
+    this._username = username;
+    this._usernameSet = true;
+  }
+
+  String username() {
+    if (!_usernameSet) verifyInfo();
+    return _username;
+  }
+
+  Future<String> email() async {
+    if (!_emailSet) await verifyInfo();
+    return _email;
+  }
+
+  Future<String> userID() async {
+    if (!_userIDSet) await verifyInfo();
+    return _userID;
+  }
+
+  void deleteEmail() {
+    _email = '';
+    _emailSet = false;
+  }
+
+  void deleteUserID() {
+    _userID = '';
+    _userIDSet = false;
+  }
+
+  void deleteUsername() {
+    _username = '';
+    _usernameSet = false;
+  }
 }
