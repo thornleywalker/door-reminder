@@ -29,13 +29,17 @@ import 'package:door_reminder/login_services/authentication.dart';
 // }
 
 void main() {
-  runApp(MyApp());
+  FirebaseApp app = FirebaseApp.instance;
+  runApp(MyApp(app: app));
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({this.app});
+  final FirebaseApp app;
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
         title: 'Doorsi',
         debugShowCheckedModeBanner: false,
         theme: new ThemeData(

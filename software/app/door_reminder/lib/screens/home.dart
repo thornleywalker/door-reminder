@@ -32,7 +32,15 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          Text("Welcome to Doorsi"),
+          FutureBuilder(
+            future: singleton.testMethod(),
+            builder: (context, AsyncSnapshot<String> val) {
+              if (val.hasData)
+                return Text(val.data);
+              else
+                return Text('loading');
+            },
+          )
         ],
       ),
     );

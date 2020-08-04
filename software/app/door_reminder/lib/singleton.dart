@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:door_reminder/login_services/authentication.dart';
+import 'package:door_reminder/testing.dart';
 
 class Singleton {
   //Singleton definition
   static final Singleton _singleton = Singleton.internal();
   Singleton.internal();
   factory Singleton() => _singleton;
+
+  //database
+  final FirebaseDatabase _database = FirebaseDatabase.instance;
+  final FirebaseDatabase _db2 = FirebaseDatabase(app: FirebaseApp.instance);
+
+  String deviceID = 'test-device-id';
+
+  Future<String> testMethod() async {
+    var _todoQuery = _db2.reference().child("devices").child(deviceID);
+    Todo testTodo = Todo(
+      subject: 'subject',
+      userId: 'uid',
+      completed: false,
+    );
+    _todoQuery.push().set(testTodo.toJson());
+
+    return 'tried to add to database';
+  }
 
   //login/logout
   BaseAuth auth;
