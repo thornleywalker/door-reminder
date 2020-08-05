@@ -1,32 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:door_reminder/login_services/authentication.dart';
-import 'package:door_reminder/testing.dart';
+import 'package:door_reminder/objects/reminder.dart';
 
 class Singleton {
   //Singleton definition
-  static final Singleton _singleton = Singleton.internal();
   Singleton.internal();
+  static final Singleton _singleton = Singleton.internal();
   factory Singleton() => _singleton;
+
+  //reminders
+  List<Reminder> _reminderList = List();
+  void addReminder(Reminder reminder) {
+    _reminderToDatabase(reminder);
+    //_reminderList.add(reminder);
+  }
 
   //database
   final FirebaseDatabase _database = FirebaseDatabase.instance;
-  final FirebaseDatabase _db2 = FirebaseDatabase(app: FirebaseApp.instance);
 
   String deviceID = 'test-device-id';
 
-  Future<String> testMethod() async {
-    var _todoQuery = _db2.reference().child("devices").child(deviceID);
-    Todo testTodo = Todo(
-      subject: 'subject',
-      userId: 'uid',
-      completed: false,
-    );
-    _todoQuery.push().set(testTodo.toJson());
+  Future<void> _reminderToDatabase(Reminder reminder) async {
+    //push new reminder to device reminders
+    DatabaseReference newPush = _database
+        .reference()
+        .child('devices')
+        .child(deviceID)
+        .child('reminders')
+        .push();
+    newPush.set(reminder.toJson());
 
-    return 'tried to add to database';
+    //add key to reminder for later deletion
+    reminder.key = newPush.key;
+
+    //increment count
+    var currCount = await _database
+        .reference()
+        .child('devices')
+        .child(deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminder-count')
+        .once();
+
+    _database
+        .reference()
+        .child('devices')
+        .child(deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminder-count')
+        .set(currCount.value + 1);
+
+    //add reminder key to user's reminders
+    _database
+        .reference()
+        .child('devices')
+        .child(deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminders')
+        .push()
+        .set(newPush.key);
+    print(newPush.key);
   }
 
   //login/logout

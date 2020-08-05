@@ -5,6 +5,7 @@ import 'package:door_reminder/singleton.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/hamburger_menu.dart';
 import 'package:door_reminder/account_menu.dart';
+import 'package:door_reminder/objects/reminder.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({BaseAuth auth, VoidCallback logoutCallback}) {
@@ -32,13 +33,14 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          FutureBuilder(
-            future: singleton.testMethod(),
-            builder: (context, AsyncSnapshot<String> val) {
-              if (val.hasData)
-                return Text(val.data);
-              else
-                return Text('loading');
+          RaisedButton(
+            child: Text('add reminder'),
+            onPressed: () async {
+              singleton.addReminder(Reminder(
+                  body: 'do homework today',
+                  direction: 'coming',
+                  uid: await singleton.userID(),
+                  destination: 'none'));
             },
           )
         ],
