@@ -5,7 +5,7 @@ import 'package:door_reminder/hamburger_menu.dart';
 import 'package:door_reminder/singleton.dart';
 
 class AccountRoute extends StatelessWidget {
-  var mySingleton = Singleton();
+  final mySingleton = Singleton();
   var context;
 
   signOut() async {

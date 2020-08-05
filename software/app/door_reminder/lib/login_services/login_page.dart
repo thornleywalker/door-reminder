@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:door_reminder/login_services/sign_in.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/screens/home.dart';
-import 'package:door_reminder/main.dart';
 
 enum AuthStatus {
   NOT_DETERMINDED,

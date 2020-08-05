@@ -1,10 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:door_reminder/hamburger_menu.dart';
-import 'package:door_reminder/login_services/sign_in.dart';
-import 'package:door_reminder/login_services/login_page.dart';
-import 'package:door_reminder/screens/home.dart';
-import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/account_menu.dart';
 
 class SettingsRoute extends StatefulWidget {

@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:io' show Platform;
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:door_reminder/login_services/login_page.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 
@@ -29,13 +24,11 @@ import 'package:door_reminder/login_services/authentication.dart';
 // }
 
 void main() {
-  FirebaseApp app = FirebaseApp.instance;
-  runApp(MyApp(app: app));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({this.app});
-  final FirebaseApp app;
+  MyApp();
 
   @override
   Widget build(BuildContext context) {
