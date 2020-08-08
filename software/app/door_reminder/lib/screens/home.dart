@@ -42,6 +42,12 @@ class _HomePageState extends State<HomePage> {
                   uid: await singleton.userID(),
                   destination: 'none'));
             },
+          ),
+          RaisedButton(
+            child: Text('add device'),
+            onPressed: () async {
+              singleton.addDevice('new-device');
+            },
           )
         ],
       ),
