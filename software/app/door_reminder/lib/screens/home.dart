@@ -66,22 +66,7 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          RaisedButton(
-            child: Text('add reminder'),
-            onPressed: () async {
-              singleton.addReminder(Reminder(
-                  body: 'do homework today',
-                  direction: 'coming',
-                  uid: await singleton.userID(),
-                  destination: 'none'));
-            },
-          ),
-          RaisedButton(
-            child: Text('add device'),
-            onPressed: () async {
-              singleton.addDevice('new-device');
-            },
-          ),
+          Text('reminders'),
         ],
       ),
     );
