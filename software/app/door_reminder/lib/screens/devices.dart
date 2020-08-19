@@ -15,6 +15,12 @@ class DevicesRoute extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Text('current devices list'),
+            RaisedButton(
+              child: Text('add device'),
+              onPressed: () async {
+                singleton.addDevice('new-device');
+              },
+            ),
           ],
         ),
       ),
