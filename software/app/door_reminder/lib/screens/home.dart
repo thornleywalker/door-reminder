@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
+<<<<<<< Updated upstream
           RaisedButton(
             child: Text('add reminder'),
             onPressed: () async {
@@ -82,7 +83,25 @@ class _HomePageState extends State<HomePage> {
               singleton.addDevice('new-device');
             },
           ),
+=======
+          Text('current reminders list'),
+>>>>>>> Stashed changes
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          await showDialog<String>(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Create new Reminder"),
+                  content: Container(
+                    child: ReminderForm(),
+                  ),
+                );
+              });
+        },
       ),
     );
   }
