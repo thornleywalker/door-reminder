@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +25,35 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var singleton = Singleton();
+
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  StreamSubscription iosSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
+        // save the token  OR subscribe to a topic here
+      });
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    }
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +81,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () async {
               singleton.addDevice('new-device');
             },
-          )
+          ),
         ],
       ),
     );
