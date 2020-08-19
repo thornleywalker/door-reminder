@@ -66,23 +66,7 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          FloatingActionButton(onPressed: () async {
-            singleton.addReminder(Reminder(
-                body: 'do homework today',
-                direction: 'coming',
-                uid: await singleton.userID(),
-                destination: 'none'));
-          }),
-          RaisedButton(
-            child: Text('add reminder'),
-            onPressed: () async {
-              singleton.addReminder(Reminder(
-                  body: 'do homework today',
-                  direction: 'coming',
-                  uid: await singleton.userID(),
-                  destination: 'none'));
-            },
-          ),
+          Text('reminders'),
         ],
       ),
     );
