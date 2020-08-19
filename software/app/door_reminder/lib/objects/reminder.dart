@@ -13,6 +13,7 @@ class _ReminderFormState extends State<ReminderForm> {
   final _formKey = GlobalKey<FormState>();
   var singleton = Singleton();
   var newReminder = Reminder();
+  String displayValue = 'device-user';
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +42,19 @@ class _ReminderFormState extends State<ReminderForm> {
               newReminder.destination = value;
             },
           ),
+          DropdownButtonFormField(
+              value: displayValue,
+              items: singleton
+                  .getDeviceUsers()
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                    value: value, child: Text(value));
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  displayValue = value;
+                });
+              }),
           RaisedButton(
             onPressed: () {
               // Validate returns true if the form is valid, or false
