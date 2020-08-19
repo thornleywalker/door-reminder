@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:door_reminder/login_services/authentication.dart';
@@ -10,19 +11,21 @@ class Singleton {
   static final Singleton _singleton = Singleton.internal();
   factory Singleton() => _singleton;
 
-  //reminders
+  //*****reminders*****
   List<Reminder> _reminderList = new List();
   void addReminder(Reminder reminder) {
     _reminderToDatabase(reminder);
     _reminderList.add(reminder);
   }
 
-  //devices
+  //*****devices*****
   void addDevice(String deviceID) {
     _deviceToDatabase(deviceID);
   }
 
-  //database
+  //*****firebase*****
+
+  //*****database*****
   final FirebaseDatabase _database = FirebaseDatabase.instance;
 
   String _deviceID = 'new-device';
@@ -124,7 +127,7 @@ class Singleton {
   }
   //add device to user
 
-  //user information
+  //*****user information*****
   String _userID;
   bool _userIDSet = false;
   String _email;
@@ -184,7 +187,7 @@ class Singleton {
     _usernameSet = false;
   }
 
-  //login/logout
+  //*****login/logout*****
   BaseAuth auth;
   VoidCallback logoutCallback;
 
