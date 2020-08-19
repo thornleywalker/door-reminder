@@ -135,8 +135,8 @@ class Singleton {
   String _username;
   bool _usernameSet = false;
 
-  Future<void> verifyInfo() async {
-    var currUser = await FirebaseAuth.instance.currentUser();
+  void verifyInfo() {
+    var currUser = FirebaseAuth.instance.currentUser;
     setEmail(currUser.email);
     setUserID(currUser.uid);
     setUsername(currUser.displayName);
