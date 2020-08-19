@@ -14,7 +14,7 @@ class SettingsRoute extends StatefulWidget {
 
 class _SettingsRouteState extends State<SettingsRoute> {
   _SettingsRouteState({this.user});
-  final FirebaseUser user;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
