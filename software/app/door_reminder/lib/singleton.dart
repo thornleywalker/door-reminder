@@ -18,7 +18,10 @@ class Singleton {
     _reminderList.add(reminder);
   }
 
+  List<Reminder> getReminderList() => _reminderList;
+
   //*****devices*****
+
   void addDevice(String deviceID) {
     _deviceToDatabase(deviceID);
   }
@@ -124,6 +127,11 @@ class Singleton {
         .child('users')
         .child(await userID())
         .set({'reminder-count': 0});
+  }
+
+  //get users registerd to current device
+  List<String> getDeviceUsers() {
+    return ['device-user', 'current-user'];
   }
   //add device to user
 
