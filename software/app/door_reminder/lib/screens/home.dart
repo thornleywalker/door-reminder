@@ -66,32 +66,8 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text('test-body'),
-              ),
-              // ReminderListTile(
-              //     reminder:
-              //         Reminder(body: 'test body', destination: 'mom\'s house')),
-            ],
-          ),
+          Text('reminders'),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          await showDialog<String>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Create new Reminder"),
-                  content: Container(
-                    child: ReminderForm(),
-                  ),
-                );
-              });
-        },
       ),
     );
   }
