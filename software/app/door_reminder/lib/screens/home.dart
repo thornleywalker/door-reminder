@@ -66,7 +66,11 @@ class _HomePageState extends State<HomePage> {
       drawer: HamburgerMenu(),
       body: Column(
         children: <Widget>[
-          Text('reminders'),
+          ListView(
+            children: <Widget>[
+              //singleton.getReminderList(),
+            ],
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

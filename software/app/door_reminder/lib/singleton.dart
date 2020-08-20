@@ -18,6 +18,8 @@ class Singleton {
     _reminderList.add(reminder);
   }
 
+  List<Reminder> getReminderList() => _reminderList;
+
   //*****devices*****
 
   void addDevice(String deviceID) {
