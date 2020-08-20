@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:door_reminder/screens/account.dart';
 import 'package:door_reminder/screens/settings.dart';
 import 'package:door_reminder/screens/help.dart';
-import 'package:door_reminder/screens/devices.dart';
 import 'package:door_reminder/singleton.dart';
 
 class HamburgerMenu extends StatelessWidget {
@@ -55,16 +54,6 @@ class HamburgerMenu extends StatelessWidget {
             while (Navigator.canPop(context)) {
               Navigator.pop(context);
             }
-          },
-        ),
-        ListTile(
-          title: Text("Devices"),
-          onTap: () {
-            Navigator.pop(context); //close drawer
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DevicesRoute()),
-            );
           },
         ),
         ListTile(
