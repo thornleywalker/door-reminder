@@ -68,7 +68,12 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           ListView(
             children: <Widget>[
-              //singleton.getReminderList(),
+              ListTile(
+                title: Text('test-body'),
+              ),
+              // ReminderListTile(
+              //     reminder:
+              //         Reminder(body: 'test body', destination: 'mom\'s house')),
             ],
           ),
         ],

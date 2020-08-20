@@ -4,6 +4,18 @@ import 'package:flutter/material.dart';
 
 import 'package:door_reminder/singleton.dart';
 
+// class ReminderListTile extends StatelessWidget {
+//   ReminderListTile({this.reminder});
+//   final Reminder reminder;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       title: Text(reminder.body),
+//     );
+//   }
+// }
+
 class ReminderForm extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ReminderFormState();
@@ -76,6 +88,7 @@ class Reminder {
   Reminder({this.body, this.destination, this.direction, this.uid});
 
   String key;
+  @required
   String body;
   String destination;
   String direction;
