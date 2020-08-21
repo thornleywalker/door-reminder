@@ -33,6 +33,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    singleton.initialize();
+
+    //setup push messaging from FCM
     if (Platform.isIOS) {
       iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
         // save the token  OR subscribe to a topic here
@@ -64,20 +67,19 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: HamburgerMenu(),
-      body: Column(
-        children: <Widget>[
-          ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text('test-body'),
-              ),
-              // ReminderListTile(
-              //     reminder:
-              //         Reminder(body: 'test body', destination: 'mom\'s house')),
-            ],
-          ),
-        ],
-      ),
+      body: Container(
+          height: MediaQuery.of(context).size.height * .95,
+          width: MediaQuery.of(context).size.width * .95,
+          child: FutureBuilder(
+              future: singleton.getReminderList(),
+              builder: (context, AsyncSnapshot<List<Reminder>> list) {
+                return ListView(
+                  padding: const EdgeInsets.all(8),
+                  children: list.data.map<Widget>((Reminder value) {
+                    return ReminderListTile(reminder: value);
+                  }).toList(),
+                );
+              })),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
@@ -91,6 +93,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               });
+          setState(() {});
         },
       ),
     );

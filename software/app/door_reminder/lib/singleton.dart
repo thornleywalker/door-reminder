@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +12,26 @@ class Singleton {
   static final Singleton _singleton = Singleton.internal();
   factory Singleton() => _singleton;
 
+  bool initialized = false;
+
+  Future<void> initialize() async {
+    await _databaseToReminderList();
+    initialized = true;
+    //getAllDevices();
+  }
+
   //*****reminders*****
   List<Reminder> _reminderList = new List();
+
   void addReminder(Reminder reminder) {
     _reminderToDatabase(reminder);
     _reminderList.add(reminder);
   }
 
-  List<Reminder> getReminderList() => _reminderList;
+  Future<List<Reminder>> getReminderList() async {
+    if (!initialized) await initialize();
+    return _reminderList;
+  }
 
   //*****devices*****
 
@@ -87,6 +100,38 @@ class Singleton {
         .child('reminders')
         .push()
         .set(newPush.key);
+  }
+
+  Future<void> _databaseToReminderList() async {
+    Map<dynamic, dynamic> remindersSnapshot = await _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('reminders')
+        .once()
+        .then((value) async {
+      return value.value;
+    });
+
+    Map<dynamic, dynamic> userRemindersSnapshot = await _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminders')
+        .once()
+        .then((value) async {
+      return value.value;
+    });
+
+    for (var reminderKey in userRemindersSnapshot.values) {
+      print(reminderKey);
+      print(remindersSnapshot[reminderKey]);
+      var snapshot = remindersSnapshot[reminderKey];
+      if (snapshot != null)
+        _reminderList.add(Reminder.fromSnapshot(reminderKey, snapshot));
+    }
   }
 
   Future<void> _deviceToDatabase(String deviceID) async {

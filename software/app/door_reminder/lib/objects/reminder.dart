@@ -1,22 +1,50 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:door_reminder/screens/reminder_change.dart';
 
 import 'package:door_reminder/singleton.dart';
 
-// class ReminderListTile extends StatelessWidget {
-//   ReminderListTile({this.reminder});
-//   final Reminder reminder;
+class ReminderListTile extends StatelessWidget {
+  ReminderListTile({this.reminder});
+  final Reminder reminder;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListTile(
-//       title: Text(reminder.body),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.ac_unit),
+      title: Text(reminder.body != null ? reminder.body : 'none'),
+      subtitle:
+          Text(reminder.destination != null ? reminder.destination : 'none'),
+      trailing: Container(
+        width: 10,
+        child: FlatButton(
+            child: Icon(Icons.more_vert),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ReminderEditor(reminder: reminder),
+                  ));
+            }),
+      ),
+    );
+  }
+}
 
 class ReminderForm extends StatefulWidget {
+  ReminderForm({Reminder reminder}) {
+    if (reminder == null) {
+      this.reminder = Reminder();
+      this.editing = false;
+    } else {
+      this.reminder = reminder;
+      this.editing = true;
+    }
+  }
+  Reminder reminder;
+  bool editing;
+
   @override
   State<StatefulWidget> createState() => _ReminderFormState();
 }
@@ -24,11 +52,13 @@ class ReminderForm extends StatefulWidget {
 class _ReminderFormState extends State<ReminderForm> {
   final _formKey = GlobalKey<FormState>();
   var singleton = Singleton();
-  var newReminder = Reminder();
+  var tempReminder = Reminder();
+
   String displayValue = 'device-user';
 
   @override
   Widget build(BuildContext context) {
+    tempReminder = widget.reminder.clone();
     return Form(
       autovalidate: true,
       key: _formKey,
@@ -37,21 +67,23 @@ class _ReminderFormState extends State<ReminderForm> {
           TextFormField(
             decoration: InputDecoration(
                 labelText: 'Body', hintText: 'Bring box of books'),
+            initialValue: tempReminder.body,
             validator: (value) {
               if (value.isEmpty) {
-                return 'please enter some text';
+                return 'reminder body cannot be empty';
               }
               return null;
             },
             onChanged: (value) {
-              newReminder.body = value;
+              tempReminder.body = value;
             },
           ),
           TextFormField(
             decoration: InputDecoration(
                 labelText: 'Destination', hintText: '(optional)'),
+            initialValue: tempReminder.destination,
             onChanged: (value) {
-              newReminder.destination = value;
+              tempReminder.destination = value;
             },
           ),
           DropdownButtonFormField(
@@ -67,17 +99,33 @@ class _ReminderFormState extends State<ReminderForm> {
                   displayValue = value;
                 });
               }),
-          RaisedButton(
-            onPressed: () {
-              // Validate returns true if the form is valid, or false
-              // otherwise.
-              if (_formKey.currentState.validate()) {
-                singleton.addReminder(newReminder);
-                Navigator.pop(context);
-              }
-            },
-            child: Text('Create'),
-          ),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+            if (widget.editing)
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel'),
+                ),
+              ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: RaisedButton(
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    if (!widget.editing)
+                      singleton.addReminder(tempReminder);
+                    else
+                      widget.reminder = tempReminder;
+                    Navigator.pop(context);
+                  }
+                },
+                child: Text(widget.editing ? 'Save' : 'Create'),
+              ),
+            ),
+          ])
         ],
       ),
     );
@@ -89,17 +137,17 @@ class Reminder {
 
   String key;
   @required
-  String body;
-  String destination;
-  String direction;
-  String uid;
+  String body = '';
+  String destination = '';
+  String direction = '';
+  String uid = '';
 
-  Reminder.fromSnapshot(DataSnapshot snapshot)
-      : key = snapshot.key,
-        body = snapshot.value['body'],
-        destination = snapshot.value['destination'],
-        direction = snapshot.value['direction'],
-        uid = snapshot.value['user-id'];
+  Reminder.fromSnapshot(String key, Map<dynamic, dynamic> snapshot)
+      : key = key,
+        body = snapshot['body'],
+        destination = snapshot['destination'],
+        direction = snapshot['direction'],
+        uid = snapshot['user-id'];
 
   toJson() {
     return {
@@ -108,5 +156,16 @@ class Reminder {
       'direction': direction,
       'user-id': uid
     };
+  }
+
+  Reminder clone() {
+    var returnReminder = Reminder(
+      body: this.body,
+      destination: this.destination,
+      direction: this.direction,
+      uid: this.uid,
+    );
+
+    return returnReminder;
   }
 }
