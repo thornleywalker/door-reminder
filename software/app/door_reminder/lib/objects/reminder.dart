@@ -1,36 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:door_reminder/screens/reminder_change.dart';
 
+import 'package:door_reminder/objects/reminder/list_tile.dart';
+import 'package:door_reminder/objects/reminder/reminder_change.dart';
 import 'package:door_reminder/singleton.dart';
 
-class ReminderListTile extends StatelessWidget {
-  ReminderListTile({this.reminder});
-  final Reminder reminder;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.ac_unit),
-      title: Text(reminder.body != null ? reminder.body : 'none'),
-      subtitle:
-          Text(reminder.destination != null ? reminder.destination : 'none'),
-      trailing: Container(
-        width: 10,
-        child: FlatButton(
-            child: Icon(Icons.more_vert),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ReminderEditor(reminder: reminder),
-                  ));
-            }),
-      ),
-    );
-  }
-}
+export 'package:door_reminder/objects/reminder/list_tile.dart';
 
 class ReminderForm extends StatefulWidget {
   ReminderForm({Reminder reminder}) {

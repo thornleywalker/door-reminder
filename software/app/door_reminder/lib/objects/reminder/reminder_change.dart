@@ -16,6 +16,8 @@ class _ReminderEditorState extends State<ReminderEditor> {
         appBar: AppBar(
           title: Text('Reminder Editor'),
         ),
-        body: ReminderForm(reminder: widget.reminder));
+        body: Container(
+            padding: const EdgeInsets.all(10),
+            child: ReminderForm(reminder: widget.reminder)));
   }
 }

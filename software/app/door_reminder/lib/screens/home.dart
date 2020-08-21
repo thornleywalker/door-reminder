@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: HamburgerMenu(),
       body: Container(
-          height: MediaQuery.of(context).size.height * .95,
-          width: MediaQuery.of(context).size.width * .95,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           child: FutureBuilder(
               future: singleton.getReminderList(),
               builder: (context, AsyncSnapshot<List<Reminder>> list) {
