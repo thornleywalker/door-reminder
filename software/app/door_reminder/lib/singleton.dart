@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,15 @@ class Singleton {
   Singleton.internal();
   static final Singleton _singleton = Singleton.internal();
   factory Singleton() => _singleton;
+
+  void clearSingleton() {
+    deleteEmail();
+    deleteUserID();
+    deleteUsername();
+    initialized = false;
+    _reminderList.clear();
+    _deviceID = '';
+  }
 
   bool initialized = false;
 
@@ -256,11 +264,5 @@ class Singleton {
   VoidCallback getLogoutCallback() {
     clearSingleton();
     return logoutCallback;
-  }
-
-  void clearSingleton() {
-    deleteEmail();
-    deleteUserID();
-    deleteUsername();
   }
 }
