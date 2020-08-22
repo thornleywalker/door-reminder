@@ -25,7 +25,6 @@ class _ReminderListTileState extends State<ReminderListTile> {
             horizontal: VisualDensity.minimumDensity),
         child: ListTile(
           contentPadding: const EdgeInsets.all(0),
-          dense: true,
           leading: Icon(
             widget.reminder.direction == 'going'
                 ? Icons.arrow_right
