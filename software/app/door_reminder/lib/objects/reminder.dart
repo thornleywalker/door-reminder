@@ -34,6 +34,7 @@ class _ReminderFormState extends State<ReminderForm> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO add fields for user id, direction
     tempReminder = widget.reminder.clone();
     return Form(
       autovalidate: true,
@@ -115,8 +116,9 @@ class Reminder {
   @required
   String body = '';
   String destination = '';
-  String direction = '';
+  String direction = ''; //change to bool going = true;
   String uid = '';
+  //add String notes = '';
 
   Reminder.fromSnapshot(String key, Map<dynamic, dynamic> snapshot)
       : key = key,

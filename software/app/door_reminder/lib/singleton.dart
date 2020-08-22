@@ -23,21 +23,30 @@ class Singleton {
   bool initialized = false;
 
   Future<void> initialize() async {
+    // if (!initialized) {
+    _reminderList.clear();
     await _databaseToReminderList();
     initialized = true;
+    // }
     //getAllDevices();
   }
 
   //*****reminders*****
   List<Reminder> _reminderList = new List();
+  int listSize = 0;
 
   void addReminder(Reminder reminder) {
     _reminderToDatabase(reminder);
     _reminderList.add(reminder);
   }
 
+  void deleteReminder(Reminder reminder) {
+    _removeFromDatabase(reminder);
+    _reminderList.remove(reminder);
+  }
+
   Future<List<Reminder>> getReminderList() async {
-    if (!initialized) await initialize();
+    await initialize();
     return _reminderList;
   }
 
@@ -106,8 +115,8 @@ class Singleton {
         .child('users')
         .child(await userID())
         .child('reminders')
-        .push()
-        .set(newPush.key);
+        .child(newPush.key)
+        .set(0);
   }
 
   Future<void> _databaseToReminderList() async {
@@ -133,13 +142,17 @@ class Singleton {
       return value.value;
     });
 
-    for (var reminderKey in userRemindersSnapshot.values) {
-      print(reminderKey);
-      print(remindersSnapshot[reminderKey]);
-      var snapshot = remindersSnapshot[reminderKey];
-      if (snapshot != null)
-        _reminderList.add(Reminder.fromSnapshot(reminderKey, snapshot));
+    List<Reminder> _tempList = new List();
+    if (userRemindersSnapshot != null) {
+      for (var reminderKey in userRemindersSnapshot.keys) {
+        var snapshot = remindersSnapshot[reminderKey];
+        if (snapshot != null)
+          _tempList.add(Reminder.fromSnapshot(reminderKey, snapshot));
+      }
     }
+
+    _reminderList = _tempList;
+    listSize = _reminderList.length;
   }
 
   Future<void> _deviceToDatabase(String deviceID) async {
@@ -180,6 +193,46 @@ class Singleton {
         .child('users')
         .child(await userID())
         .set({'reminder-count': 0});
+  }
+
+  Future<void> _removeFromDatabase(Reminder reminder) async {
+    //remove reminder from database
+    await _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('reminders')
+        .child(reminder.key)
+        .remove();
+
+    await _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminders')
+        .child(reminder.key)
+        .remove();
+
+    //deincrement user reminder count
+    var currCount = await _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('users')
+        .child(await userID()) //TODO changed to reminder.uid
+        .child('reminder-count')
+        .once();
+
+    _database
+        .reference()
+        .child('devices')
+        .child(_deviceID)
+        .child('users')
+        .child(await userID())
+        .child('reminder-count')
+        .set(currCount.value - 1);
   }
 
   //get users registerd to current device

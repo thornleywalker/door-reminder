@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   StreamSubscription iosSubscription;
 
+  void refresh() => this.setState(() {});
+
   @override
   void initState() {
     super.initState();
@@ -61,7 +63,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doorsi"),
+        title: Text("Doorsi", style: TextStyle(fontSize: 30)),
         actions: <Widget>[
           AccountMenu(),
         ],
@@ -76,9 +78,9 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: MediaQuery.of(context).size.width * .8,
                 padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
-                child: Text('Reminders',
+                child: Text('Reminders', // (${singleton.listSize})',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                     )),
               ),
               Container(
@@ -118,7 +120,8 @@ class _HomePageState extends State<HomePage> {
                       return ListView(
                         padding: const EdgeInsets.all(8),
                         children: list.data.map<Widget>((Reminder value) {
-                          return ReminderListTile(reminder: value);
+                          return ReminderListTile(
+                              notifyParent: this.refresh, reminder: value);
                         }).toList(),
                       );
                     } else
@@ -136,26 +139,14 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                 child: Text('Devices',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                     )),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * .2,
                 child: FlatButton(
                   child: Icon(Icons.add),
-                  onPressed: () async {
-                    await showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Create new Reminder"),
-                            content: Container(
-                              child: ReminderForm(),
-                            ),
-                          );
-                        });
-                    setState(() {});
-                  },
+                  onPressed: () {},
                 ),
               ),
             ])),
