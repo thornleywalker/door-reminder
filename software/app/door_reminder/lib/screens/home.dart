@@ -67,35 +67,99 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: HamburgerMenu(),
-      body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: FutureBuilder(
-              future: singleton.getReminderList(),
-              builder: (context, AsyncSnapshot<List<Reminder>> list) {
-                return ListView(
-                  padding: const EdgeInsets.all(8),
-                  children: list.data.map<Widget>((Reminder value) {
-                    return ReminderListTile(reminder: value);
-                  }).toList(),
-                );
-              })),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {
-          await showDialog<String>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Create new Reminder"),
-                  content: Container(
-                    child: ReminderForm(),
-                  ),
-                );
-              });
-          setState(() {});
-        },
-      ),
+      body: Column(children: [
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .1,
+            alignment: Alignment.center,
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Container(
+                width: MediaQuery.of(context).size.width * .8,
+                padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                child: Text('Reminders',
+                    style: TextStyle(
+                      fontSize: 24,
+                    )),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .2,
+                child: FlatButton(
+                  child: Icon(Icons.add),
+                  onPressed: () async {
+                    await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Create new Reminder"),
+                            content: Container(
+                              child: ReminderForm(),
+                            ),
+                          );
+                        });
+                    setState(() {});
+                  },
+                ),
+              ),
+            ])),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .4,
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Colors.grey),
+                bottom: BorderSide(color: Colors.grey),
+              ),
+            ),
+            child: FutureBuilder(
+                future: singleton.getReminderList(),
+                builder: (context, AsyncSnapshot<List<Reminder>> list) {
+                  if (list.hasData) {
+                    if (list.data != null) {
+                      return ListView(
+                        padding: const EdgeInsets.all(8),
+                        children: list.data.map<Widget>((Reminder value) {
+                          return ReminderListTile(reminder: value);
+                        }).toList(),
+                      );
+                    } else
+                      return Text('No reminders to display');
+                  } else
+                    return Text('Loading Reminders');
+                })),
+        Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .1,
+            alignment: Alignment.center,
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Container(
+                width: MediaQuery.of(context).size.width * .8,
+                padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                child: Text('Devices',
+                    style: TextStyle(
+                      fontSize: 24,
+                    )),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * .2,
+                child: FlatButton(
+                  child: Icon(Icons.add),
+                  onPressed: () async {
+                    await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Create new Reminder"),
+                            content: Container(
+                              child: ReminderForm(),
+                            ),
+                          );
+                        });
+                    setState(() {});
+                  },
+                ),
+              ),
+            ])),
+      ]),
     );
   }
 }

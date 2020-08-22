@@ -16,12 +16,14 @@ class _ReminderListTileState extends State<ReminderListTile> {
     return Column(children: <Widget>[
       FlatButton(
         padding: const EdgeInsets.all(0),
+        visualDensity: VisualDensity(vertical: VisualDensity.minimumDensity),
         child: ListTile(
           title: Text(
               widget.reminder.body != null ? widget.reminder.body : 'none'),
           subtitle: Text(widget.reminder.destination != null
               ? widget.reminder.destination
               : 'none'),
+          dense: true,
         ),
         onPressed: () {
           Navigator.push(
