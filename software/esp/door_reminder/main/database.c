@@ -7,6 +7,9 @@
 #define FIREBASE_REST_USERS "/users"
 #define FIREBASE_REST_REMINDERS "/reminders"
 
+#define DEVICE_ID "new-device"
+#define USER_ID "device-user"
+
 #define REMINDERS_BASE_LENGTH 16
 
 typedef enum direction_e{
@@ -27,7 +30,6 @@ void connect_to_firebase()
     esp_http_client_config_t firebase_configuration = 
     {
         .url = FIREBASE_REST_BASE
-        
     };
     firebase_rest_handle = esp_http_client_init(&firebase_configuration);
 }
@@ -35,11 +37,12 @@ void connect_to_firebase()
 //gets users from Firebase, adds them to singleton user array
 void get_device_users()
 {
-    char* device_users_url;
-    sprintf(device_users_url, "%s, %s"
+    char device_users_url[100];
+    sprintf(device_users_url, "%s%s%s%s%s",
             FIREBASE_REST_BASE,
             FIREBASE_REST_DEVICES,
-            '/', singleton_get_device_id(),
+            "/", DEVICE_ID,
+            // '/', singleton_get_device_id(),
             FIREBASE_REST_USERS
     );
     esp_http_client_set_url(firebase_rest_handle, device_users_url);
@@ -51,11 +54,11 @@ void get_device_users()
 //checks for reminders for each user in singleton
 void get_user_reminders(char* user_id)
 {
-    char* device_users_url;
-        sprintf(device_users_url, 
+    char device_users_url[100];
+        sprintf(device_users_url, "%s%s%s%s%s",
                 FIREBASE_REST_BASE,
                 FIREBASE_REST_DEVICES,
-                '/', singleton_get_device_id(),
+                "/", singleton_get_device_id(),
                 FIREBASE_REST_REMINDERS
         );
     esp_http_client_set_url(firebase_rest_handle, device_users_url);
@@ -73,4 +76,13 @@ void get_user_reminders(char* user_id)
             //for user (coming, going) in singleton
         }
     }
+}
+
+void database_login(){
+    printf("attempting to connect to firebase\n\r");
+    connect_to_firebase();
+
+    printf("attempting to get device users\n\r");
+    get_device_users();
+
 }

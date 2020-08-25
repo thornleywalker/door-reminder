@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := door_reminder
+PROJECT_NAME := fast_scan
 
 include $(IDF_PATH)/make/project.mk
 

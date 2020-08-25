@@ -1,5 +1,5 @@
-#ifndef WIFI_H
-#define WIFI_H
+#ifndef DR_WIFI_H
+#define DR_WIFI_H
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"

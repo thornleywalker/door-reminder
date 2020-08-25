@@ -1,9 +1,36 @@
-#include "wifi.h"
+/* Scan Example
 
+   This example code is in the Public Domain (or CC0 licensed, at your option.)
+
+   Unless required by applicable law or agreed to in writing, this
+   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+   CONDITIONS OF ANY KIND, either express or implied.
+*/
+
+/*
+    This example shows how to use the All Channel Scan or Fast Scan to connect
+    to a Wi-Fi network.
+
+    In the Fast Scan mode, the scan will stop as soon as the first network matching
+    the SSID is found. In this mode, an application can set threshold for the
+    authentication mode and the Signal strength. Networks that do not meet the
+    threshold requirements will be ignored.
+
+    In the All Channel Scan mode, the scan will end only after all the channels
+    are scanned, and connection will start with the best network. The networks
+    can be sorted based on Authentication Mode or Signal Strength. The priority
+    for the Authentication mode is:  WPA2 > WPA > WEP > Open
+*/
+#include "freertos/FreeRTOS.h"
+#include "freertos/event_groups.h"
+#include "esp_wifi.h"
+#include "esp_log.h"
+#include "esp_event.h"
+#include "nvs_flash.h"
 
 /* Set the SSID and Password via project configuration, or can set directly here */
-#define DEFAULT_SSID CONFIG_EXAMPLE_WIFI_SSID
-#define DEFAULT_PWD CONFIG_EXAMPLE_WIFI_PASSWORD
+#define DEFAULT_SSID "WeeFee"//CONFIG_EXAMPLE_WIFI_SSID
+#define DEFAULT_PWD "P@ssw0rd"//CONFIG_EXAMPLE_WIFI_PASSWORD
 
 #if CONFIG_EXAMPLE_WIFI_ALL_CHANNEL_SCAN
 #define DEFAULT_SCAN_METHOD WIFI_ALL_CHANNEL_SCAN
@@ -56,7 +83,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
 
 
 /* Initialize Wi-Fi as sta and set scan method */
-static void fast_scan(char* ssid, char* password)
+static void fast_scan(void)
 {
     tcpip_adapter_init();
     ESP_ERROR_CHECK(esp_event_loop_create_default());
@@ -69,8 +96,8 @@ static void fast_scan(char* ssid, char* password)
 
     wifi_config_t wifi_config = {
         .sta = {
-            .ssid = {ssid},
-            .password = {password},
+            .ssid = DEFAULT_SSID,
+            .password = DEFAULT_PWD,
             .scan_method = DEFAULT_SCAN_METHOD,
             .sort_method = DEFAULT_SORT_METHOD,
             .threshold.rssi = DEFAULT_RSSI,
@@ -82,8 +109,15 @@ static void fast_scan(char* ssid, char* password)
     ESP_ERROR_CHECK(esp_wifi_start());
 }
 
-static void wifi_attempt_connect_to(char* ssid, char* password)
+void app_main(void)
 {
-    printf("Attempting to connect to wifi %s with password: %s\n\r", ssid, password);
-    fast_scan(ssid, password);
+    // Initialize NVS
+    esp_err_t ret = nvs_flash_init();
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+        ESP_ERROR_CHECK(nvs_flash_erase());
+        ret = nvs_flash_init();
+    }
+    ESP_ERROR_CHECK( ret );
+
+    fast_scan();
 }
