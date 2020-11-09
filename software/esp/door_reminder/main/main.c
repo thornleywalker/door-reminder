@@ -16,7 +16,7 @@
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
 
-void app_main()
+void app_main  ()
 {
     // Initialize NVS
     esp_err_t ret = nvs_flash_init();
