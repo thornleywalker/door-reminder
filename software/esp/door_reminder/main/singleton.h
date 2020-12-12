@@ -14,7 +14,7 @@ typedef struct user{
 }user_t;
 
 typedef struct user_array{
-    user_t users[MAX_USERS+1];
+    user_t users[MAX_USERS+1];  //extra for device user
     uint8_t length;
 }user_array_t;
 
@@ -28,6 +28,7 @@ typedef struct bt_connection_strengths{
     uint8_t length;
 }bt_strengths_t;
 
+
 //initializes singleton
 // *** users array at 0 will be general device reminders (no user)
 void singleton_init();
@@ -40,5 +41,6 @@ void singleton_add_user(char* new_user_id);
 
 //returns pointer to users array
 user_array_t* singleton_get_users();
+
 
 #endif

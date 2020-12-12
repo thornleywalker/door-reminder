@@ -1,8 +1,9 @@
 #include "singleton.h"
 
-#define MAX_DEVICE_ID_LENGTH 20
+#define SINGLETON_MAX_DEVICE_ID_LENGTH 20
 
-static char device_id[MAX_DEVICE_ID_LENGTH];
+static char device_id[SINGLETON_MAX_DEVICE_ID_LENGTH];
+
 static user_array_t users;
 static bt_strengths_t bt_strengths;
 

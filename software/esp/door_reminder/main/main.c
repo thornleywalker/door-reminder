@@ -11,7 +11,9 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_spi_flash.h"
+
 #include "wifi.h"
+#include "database.h"
 
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
@@ -26,7 +28,12 @@ void app_main()
     }
     ESP_ERROR_CHECK( ret );
 
+    //attempt to connect to wifi
     wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
+
+    testing_function();
+    while(true);    //infinite loop for testing
+    // database_login();
 
 #if false
     printf("Hello world!\n");

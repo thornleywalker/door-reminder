@@ -6,5 +6,6 @@
 
 void database_login();
 void database_sync();
+void testing_function();
 
 #endif
