@@ -1,0 +1,9 @@
+{
+    "cmake.configureOnOpen": true,
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "xutility": "c",
+        "thread": "c",
+        "xlocale": "c"
+    }
+}

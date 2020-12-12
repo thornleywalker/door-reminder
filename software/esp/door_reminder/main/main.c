@@ -6,7 +6,12 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-#include <stdio.h>
+
+#include "singleton.h"
+#include "wifi.h"
+
+#include "esp_spi_flash.h"
+#include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
@@ -14,19 +19,23 @@
 
 #include "wifi.h"
 #include "database.h"
+#include <stdio.h>
 
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
 
-void app_main()
-{
-    // Initialize NVS
+void app_main() {
     esp_err_t ret = nvs_flash_init();
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+
+    if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
+        ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
         ret = nvs_flash_init();
     }
-    ESP_ERROR_CHECK( ret );
+    ESP_ERROR_CHECK(ret);
+
+    // initializations
+    singleton_init();
 
     //attempt to connect to wifi
     wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
@@ -59,5 +68,4 @@ void app_main()
     fflush(stdout);
     esp_restart();
 #endif
-    
 }

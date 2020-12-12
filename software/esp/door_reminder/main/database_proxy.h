@@ -1,5 +1,5 @@
-#ifndef DATABASE_H
-#define DATABASE_H
+#ifndef DATABASE_PROXY_H
+#define DATABASE_PROXY_H
 
 #include <stdio.h>
 #include <stdlib.h>
