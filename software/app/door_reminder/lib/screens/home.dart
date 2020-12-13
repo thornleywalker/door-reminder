@@ -52,6 +52,8 @@ class _HomePageState extends State<HomePage> {
         print("onResume: $message");
       },
     );
+
+    _fcm.subscribeToTopic("test-topic");
   }
 
   @override
