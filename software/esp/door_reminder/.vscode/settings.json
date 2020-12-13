@@ -9,6 +9,8 @@
   "C_Cpp.intelliSenseEngineFallback": "Enabled",
   "idf.portWin": "COM4",
   "files.associations": {
-    "*.inc": "c"
+    "*.inc": "c",
+    "*.h": "c",
+    "*.c": "c"
   }
 }
