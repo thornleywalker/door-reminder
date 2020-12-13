@@ -1,4 +1,1 @@
-*
-!.gitignore
-!app/
-!esp/
+esp-idf/*
