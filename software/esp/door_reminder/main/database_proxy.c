@@ -1,5 +1,6 @@
 #include "database_proxy.h"
 #include "esp_http_client.h"
+#include "esp_log.h"
 #include "singleton.h"
 
 #define FIREBASE_REST_BASE "https://door-reminder-89e84.firebaseio.com"

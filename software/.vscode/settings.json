@@ -3,5 +3,6 @@
         "freertos.h": "c",
         "xlocale": "c",
         "xstring": "c"
-    }
+    },
+    "editor.formatOnSave": true
 }

@@ -7,6 +7,7 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#include "database_proxy.h"
 #include "singleton.h"
 #include "wifi.h"
 
@@ -14,35 +15,30 @@
 #include "esp_system.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_system.h"
-#include "esp_spi_flash.h"
-
-#include "wifi.h"
-#include "database.h"
 #include <stdio.h>
 
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
 
 void app_main() {
-    esp_err_t ret = nvs_flash_init();
+  esp_err_t ret = nvs_flash_init();
 
-    if (ret == ESP_ERR_NVS_NO_FREE_PAGES ||
-        ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(ret);
+  if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+    ESP_ERROR_CHECK(nvs_flash_erase());
+    ret = nvs_flash_init();
+  }
+  ESP_ERROR_CHECK(ret);
 
-    // initializations
-    singleton_init();
+  // initializations
+  singleton_init();
 
-    //attempt to connect to wifi
-    wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
+  // attempt to connect to wifi
+  wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
 
-    testing_function();
-    while(true);    //infinite loop for testing
-    // database_login();
+  testing_function();
+  while (true)
+    ; // infinite loop for testing
+      // database_login();
 
 #if false
     printf("Hello world!\n");
