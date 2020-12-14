@@ -1,4 +1,4 @@
-#include "singleton.h"
+#include "data_cache.h"
 
 #include "esp_log.h"
 #include "nvs.h"
@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const char *TAG = "singleton";
+static const char *TAG = "data_cache";
 
 #define MAX_DEVICE_ID_LENGTH 20
 
@@ -63,7 +63,7 @@ esp_err_t users_init() {
 }
 
 // adds user to users array
-void singleton_add_user(char *new_user_id) {
+void data_cache_add_user(char *new_user_id) {
   esp_err_t err;
   int index = users_array.length;
   users_array.users[index].id = malloc(sizeof(char) * MAX_UID_LENGTH);
@@ -83,7 +83,7 @@ void singleton_add_user(char *new_user_id) {
 }
 
 // adds user to users array
-void singleton_remove_user(char *new_user_id) {}
+void data_cache_remove_user(char *new_user_id) {}
 
 esp_err_t bt_strengths_init() {
   esp_err_t err = ESP_OK;
@@ -99,7 +99,7 @@ esp_err_t bt_strengths_init() {
   return err;
 }
 
-esp_err_t singleton_init() {
+esp_err_t data_cache_init() {
   // Initialize NVS
   esp_err_t err = nvs_flash_init();
 
@@ -116,4 +116,4 @@ esp_err_t singleton_init() {
   return err;
 }
 
-char *singleton_get_device_id() { return device_id; }
+char *data_cache_get_device_id() { return device_id; }
