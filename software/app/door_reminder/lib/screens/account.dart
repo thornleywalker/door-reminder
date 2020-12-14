@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:door_reminder/hamburger_menu.dart';
-import 'package:door_reminder/singleton.dart';
+import 'package:door_reminder/dataCache.dart';
 
 class AccountRoute extends StatelessWidget {
-  final mySingleton = Singleton();
+  final dc = DataCache();
   var context;
 
   signOut() async {
@@ -14,12 +14,12 @@ class AccountRoute extends StatelessWidget {
     }
 
     try {
-      await mySingleton.auth.signOut();
-      mySingleton.logoutCallback();
+      await dc.auth.signOut();
+      dc.logoutCallback();
     } catch (e) {
       print(e);
     }
-    mySingleton.clearSingleton();
+    dc.clearDataCache();
   }
 
   @override
@@ -37,7 +37,7 @@ class AccountRoute extends StatelessWidget {
             children: <Widget>[
               //Text('Username: ' + mySingleton.username()),
               FutureBuilder(
-                  future: mySingleton.userID(),
+                  future: dc.userID(),
                   builder: (context, AsyncSnapshot<String> uid) {
                     if (uid.hasData)
                       return Text('UserID: ' + uid.data);
@@ -45,7 +45,7 @@ class AccountRoute extends StatelessWidget {
                       return Text('Loading');
                   }),
               FutureBuilder(
-                  future: mySingleton.email(),
+                  future: dc.email(),
                   builder: (context, AsyncSnapshot<String> email) {
                     if (email.hasData)
                       return Text('email: ' + email.data);

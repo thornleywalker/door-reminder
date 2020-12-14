@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:door_reminder/screens/account.dart';
-import 'package:door_reminder/singleton.dart';
+import 'package:door_reminder/dataCache.dart';
 
 class AccountMenu extends StatelessWidget {
   AccountMenu();
-  static var mySingleton = Singleton();
+  static var dc = DataCache();
   //var context;
 
   @override

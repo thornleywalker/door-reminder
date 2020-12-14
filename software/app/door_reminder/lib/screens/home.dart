@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:door_reminder/singleton.dart';
+import 'package:door_reminder/dataCache.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/hamburger_menu.dart';
 import 'package:door_reminder/account_menu.dart';
@@ -13,18 +13,18 @@ import 'package:door_reminder/objects/reminder.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({BaseAuth auth, VoidCallback logoutCallback}) {
-    singleton.setAuth(auth);
-    singleton.setLogoutCallback(logoutCallback);
+    dc.setAuth(auth);
+    dc.setLogoutCallback(logoutCallback);
   }
 
-  final singleton = Singleton();
+  final dc = DataCache();
 
   @override
   State<StatefulWidget> createState() => new _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  var singleton = Singleton();
+  var singleton = DataCache();
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
   StreamSubscription iosSubscription;
@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: <Widget>[
           Text('reminders'),
+          RaisedButton(onPressed: () {}),
         ],
       ),
     );

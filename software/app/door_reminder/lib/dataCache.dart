@@ -5,11 +5,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:door_reminder/login_services/authentication.dart';
 import 'package:door_reminder/objects/reminder.dart';
 
-class Singleton {
-  //Singleton definition
-  Singleton.internal();
-  static final Singleton _singleton = Singleton.internal();
-  factory Singleton() => _singleton;
+class DataCache {
+  //DataCache definition
+  DataCache.internal();
+  static final DataCache _dataCache = DataCache.internal();
+  factory DataCache() => _dataCache;
 
   //*****reminders*****
   List<Reminder> _reminderList = new List();
@@ -201,11 +201,11 @@ class Singleton {
 
   BaseAuth getAuth() => auth;
   VoidCallback getLogoutCallback() {
-    clearSingleton();
+    clearDataCache();
     return logoutCallback;
   }
 
-  void clearSingleton() {
+  void clearDataCache() {
     deleteEmail();
     deleteUserID();
     deleteUsername();

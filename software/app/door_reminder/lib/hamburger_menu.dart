@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:door_reminder/screens/account.dart';
 import 'package:door_reminder/screens/settings.dart';
 import 'package:door_reminder/screens/help.dart';
-import 'package:door_reminder/singleton.dart';
+import 'package:door_reminder/dataCache.dart';
 
 class HamburgerMenu extends StatelessWidget {
   HamburgerMenu();
 
-  static var mySingleton = Singleton();
+  static var dc = DataCache();
   static String userName, userEmail;
 
   @override
@@ -16,7 +16,7 @@ class HamburgerMenu extends StatelessWidget {
       child: ListView(children: <Widget>[
         UserAccountsDrawerHeader(
           accountName: FutureBuilder(
-              future: mySingleton.userID(),
+              future: dc.userID(),
               builder: (context, AsyncSnapshot<String> uid) {
                 if (uid.hasData)
                   return Text('UserID: ' + uid.data);
@@ -24,7 +24,7 @@ class HamburgerMenu extends StatelessWidget {
                   return Text('Loading...');
               }),
           accountEmail: FutureBuilder(
-              future: mySingleton.email(),
+              future: dc.email(),
               builder: (context, AsyncSnapshot<String> email) {
                 if (email.hasData)
                   return Text('UserID: ' + email.data);
@@ -36,7 +36,7 @@ class HamburgerMenu extends StatelessWidget {
                 ? Colors.blue
                 : Colors.white,
             child: FutureBuilder(
-                future: mySingleton.email(),
+                future: dc.email(),
                 builder: (context, AsyncSnapshot<String> email) {
                   if (email.hasData)
                     return Text(
