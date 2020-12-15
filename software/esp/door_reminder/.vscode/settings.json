@@ -11,6 +11,7 @@
   "files.associations": {
     "*.inc": "c",
     "*.h": "c",
-    "*.c": "c"
+    "*.c": "c",
+    "functional": "c"
   }
 }
