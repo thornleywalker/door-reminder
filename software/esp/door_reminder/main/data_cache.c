@@ -117,3 +117,5 @@ esp_err_t data_cache_init() {
 }
 
 char *data_cache_get_device_id() { return device_id; }
+
+user_t *data_cache_get_user(int index) { return users_array.users + index; }

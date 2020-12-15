@@ -10,7 +10,7 @@
 #define MAX_UID_LENGTH 20
 
 typedef struct user {
-  char *id;
+  char id[MAX_UID_LENGTH];
   bool has_going_reminders;
   bool has_coming_reminders;
 } user_t;
@@ -21,7 +21,7 @@ typedef struct user_array {
 } user_array_t;
 
 typedef struct bt_strength {
-  char *uid;
+  char uid[MAX_UID_LENGTH];
   int32_t value;
 } bt_strength;
 
@@ -45,5 +45,7 @@ void data_cache_remove_user(char *new_user_id);
 
 // returns pointer to users array
 user_array_t *data_cache_get_users();
+
+user_t *data_cache_get_user(int index);
 
 #endif
