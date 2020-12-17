@@ -5,9 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:door_reminder/dataCache.dart';
-import 'package:door_reminder/login_services/authentication.dart';
-import 'package:door_reminder/hamburger_menu.dart';
+import 'package:door_reminder/services/dataCache.dart';
+import 'package:door_reminder/services/authentication.dart';
+import 'package:door_reminder/widgets/hamburger_menu.dart';
 import 'package:door_reminder/account_menu.dart';
 import 'package:door_reminder/objects/reminder.dart';
 
@@ -59,19 +59,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Doorsi"),
-        actions: <Widget>[
-          AccountMenu(),
-        ],
-      ),
-      drawer: HamburgerMenu(),
-      body: Column(
-        children: <Widget>[
-          Text('reminders'),
-          RaisedButton(onPressed: () {}),
-        ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text("Doorsi"),
+          actions: <Widget>[
+            AccountMenu(),
+          ],
+        ),
+        drawer: HamburgerMenu(),
+        body: Column(
+          children: <Widget>[
+            Text('Reminders'),
+            RaisedButton(onPressed: () {}),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {},
+        ));
   }
 }

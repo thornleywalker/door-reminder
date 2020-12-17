@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:door_reminder/hamburger_menu.dart';
+import 'package:door_reminder/widgets/hamburger_menu.dart';
 
 class HelpRoute extends StatelessWidget {
   @override

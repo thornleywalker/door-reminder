@@ -1,8 +1,8 @@
 //import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:door_reminder/hamburger_menu.dart';
-import 'package:door_reminder/dataCache.dart';
+import 'package:door_reminder/widgets/hamburger_menu.dart';
+import 'package:door_reminder/services/dataCache.dart';
 
 class AccountRoute extends StatelessWidget {
   final dc = DataCache();

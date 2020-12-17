@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:door_reminder/login_services/authentication.dart';
+import 'package:door_reminder/services/authentication.dart';
 import 'package:door_reminder/objects/reminder.dart';
 
 class DataCache {
@@ -13,6 +13,7 @@ class DataCache {
 
   //*****reminders*****
   List<Reminder> _reminderList = new List();
+
   void addReminder(Reminder reminder) {
     _reminderToDatabase(reminder);
     _reminderList.add(reminder);

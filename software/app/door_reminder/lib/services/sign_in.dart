@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:door_reminder/login_services/authentication.dart';
+import 'package:door_reminder/services/authentication.dart';
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
@@ -148,8 +148,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             showErrorMessage(),
             showEmailInput(),
             showPasswordInput(),
-            if (!_isLoginForm)
-              showPasswordConfirm(),
+            if (!_isLoginForm) showPasswordConfirm(),
             showPrimaryButton(),
             showSecondaryButton(),
           ],

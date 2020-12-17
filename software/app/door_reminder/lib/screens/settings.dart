@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:door_reminder/hamburger_menu.dart';
+import 'package:door_reminder/widgets/hamburger_menu.dart';
 import 'package:door_reminder/account_menu.dart';
 
 class SettingsRoute extends StatefulWidget {

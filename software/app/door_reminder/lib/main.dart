@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:door_reminder/login_services/login_page.dart';
-import 'package:door_reminder/login_services/authentication.dart';
+import 'package:door_reminder/services/login_page.dart';
+import 'package:door_reminder/services/authentication.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

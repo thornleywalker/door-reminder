@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:door_reminder/login_services/sign_in.dart';
-import 'package:door_reminder/login_services/authentication.dart';
+import 'package:door_reminder/services/sign_in.dart';
+import 'package:door_reminder/services/authentication.dart';
 import 'package:door_reminder/screens/home.dart';
 
 enum AuthStatus {
