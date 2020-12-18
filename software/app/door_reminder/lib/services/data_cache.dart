@@ -1,3 +1,4 @@
+import 'package:door_reminder/objects/device.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,8 +21,11 @@ class DataCache {
   }
 
   //*****devices*****
-  void addDevice(String deviceID) {
-    _deviceToDatabase(deviceID);
+  List<Device> _deviceList = new List();
+
+  void addDevice(Device device) {
+    _deviceToDatabase(device);
+    _deviceList.add(device);
   }
 
   //*****firebase*****
@@ -33,61 +37,37 @@ class DataCache {
 
   //add reminder to database
   Future<void> _reminderToDatabase(Reminder reminder) async {
-    //push new reminder to device reminders
-    DatabaseReference newPush = _database
+    //add to users
+    DatabaseReference userPush = _database
         .reference()
-        .child('devices')
-        .child(_deviceID)
+        .child('users')
+        .child(reminder.uid)
         .child('reminders')
         .push();
-    newPush.set(reminder.toJson());
+    userPush.set(reminder.toJson());
+    //feedback reminder key
+    reminder.key = userPush.key;
 
-    //add key to reminder for later deletion
-    reminder.key = newPush.key;
-
-    //increment count
-    var currCount = await _database
+    //increment device reminder count
+    var dbCount = _database
         .reference()
         .child('devices')
-        .child(_deviceID)
-        .child('users')
-        .child(await userID())
-        .child('reminder-count')
-        .once();
+        .child(reminder.did)
+        .child(reminder.uid)
+        .child(reminder.direction)
+        .child('count');
 
-    if (currCount.value != null) {
-      _database
-          .reference()
-          .child('devices')
-          .child(_deviceID)
-          .child('users')
-          .child(await userID())
-          .child('reminder-count')
-          .set(currCount.value + 1);
-    } else {
-      _database
-          .reference()
-          .child('devices')
-          .child(_deviceID)
-          .child('users')
-          .child(await userID())
-          .child('reminder-count')
-          .set(1);
-    }
-
-    //add reminder key to user's reminders
-    _database
-        .reference()
-        .child('devices')
-        .child(_deviceID)
-        .child('users')
-        .child(await userID())
-        .child('reminders')
-        .push()
-        .set(newPush.key);
+    var currCount = dbCount.once();
+    currCount.then((snap) {
+      if (snap.value == null)
+        dbCount.set(0);
+      else
+        dbCount.set(snap.value + 1);
+    });
   }
 
-  Future<void> _deviceToDatabase(String deviceID) async {
+  Future<void> _deviceToDatabase(Device device) async {
+    String deviceID = device.id;
     //add device to user's devices
     _database
         .reference()
@@ -158,6 +138,8 @@ class DataCache {
     this._usernameSet = true;
   }
 
+  String getUserID() => this._userID;
+
   Future<String> username() async {
     if (!_usernameSet) await verifyInfo();
     return _username;
@@ -169,7 +151,7 @@ class DataCache {
   }
 
   Future<String> userID() async {
-    if (!_userIDSet) await verifyInfo();
+    if (!_userIDSet) verifyInfo();
     return _userID;
   }
 

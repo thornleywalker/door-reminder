@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:door_reminder/widgets/reminder_builder.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:door_reminder/services/dataCache.dart';
+import 'package:door_reminder/services/data_cache.dart';
 import 'package:door_reminder/services/authentication.dart';
 import 'package:door_reminder/widgets/hamburger_menu.dart';
 import 'package:door_reminder/account_menu.dart';
@@ -69,12 +70,17 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           children: <Widget>[
             Text('Reminders'),
-            RaisedButton(onPressed: () {}),
           ],
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ReminderBuilder();
+                });
+          },
         ));
   }
 }
