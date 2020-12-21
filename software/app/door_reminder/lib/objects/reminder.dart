@@ -1,13 +1,17 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 
 class Reminder {
   Reminder(
-      {this.description,
+      {this.key,
+      this.description,
       this.body,
       this.destination,
       this.direction,
-      this.uid,
-      this.did});
+      @required this.uid,
+      @required this.did})
+      : assert(uid != null),
+        assert(did != null);
 
   String key;
   String description;
