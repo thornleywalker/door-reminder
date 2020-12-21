@@ -1,29 +1,46 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 
 class Notifications {
-  Notifications(BuildContext context) {
-    fbMess.requestNotificationPermissions(); //asks permission for iOS
+  Notifications._internal();
+  factory Notifications() {
+    if (_notifications == null) _notifications = Notifications._internal();
+    return _notifications;
+  }
+  static Notifications _notifications;
 
-    fbMess.configure(onBackgroundMessage: (Map<String, dynamic> message) async {
-      showDialog<bool>(
-              context: context, builder: (_) => Text("this is a message"))
-          .then((bool shouldNavigate) {
-        if (shouldNavigate == true) {}
+  final _fbMess = FirebaseMessaging();
+  StreamSubscription iosSubscription;
+
+  void init() {
+    if (Platform.isIOS) {
+      iosSubscription = _fbMess.onIosSettingsRegistered.listen((data) {
+        // save the token  OR subscribe to a topic here
       });
-    });
 
-    fbMess.requestNotificationPermissions(const IosNotificationSettings(
-        sound: true, badge: true, alert: true, provisional: true));
-    fbMess.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    fbMess.getToken().then((String token) {
-      if (token != null) {}
-    });
+      _fbMess.requestNotificationPermissions(IosNotificationSettings());
+    }
+
+    _fbMess.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
   }
 
-  static final fbMess = FirebaseMessaging();
+  void subscribe(String topic) {
+    _fbMess.subscribeToTopic(topic);
+  }
+
+  void unsubscribe(String topic) {
+    _fbMess.unsubscribeFromTopic(topic);
+  }
 }
