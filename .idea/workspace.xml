@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5420b161-888f-42b3-ba7d-af86371f0194" name="Default Changelist" comment="" />
+    <list default="true" id="5420b161-888f-42b3-ba7d-af86371f0194" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/software/app/door_reminder/lib/screens/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/software/app/door_reminder/lib/screens/home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/software/app/door_reminder/lib/services/data_cache.dart" beforeDir="false" afterPath="$PROJECT_DIR$/software/app/door_reminder/lib/services/data_cache.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/software/app/door_reminder/lib/widgets/reminder_builder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/software/app/door_reminder/lib/widgets/reminder_builder.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
