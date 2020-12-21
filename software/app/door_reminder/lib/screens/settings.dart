@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:door_reminder/widgets/hamburger_menu.dart';
-import 'package:door_reminder/account_menu.dart';
+import 'package:door_reminder/widgets/account_menu.dart';
 
 class SettingsRoute extends StatefulWidget {
   SettingsRoute({Key key, this.title, this.userId}) : super(key: key);
