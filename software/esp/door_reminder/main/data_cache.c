@@ -8,10 +8,8 @@
 
 static const char *TAG = "data_cache";
 
-#define MAX_DEVICE_ID_LENGTH 20
-
 // NVS variables/values
-#define DEVICE_ID_KEY "device-id"
+#define DEVICE_ID_KEY "deviceid"
 #define USER_ARRAY_KEY "user-array"
 
 static nvs_handle_t users_handle;
@@ -20,9 +18,32 @@ static const char *USER_KEYS[MAX_USERS] = {"u0", "u1", "u2",  "u3",  "u4",  "u5"
                                            "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15"};
 
 // static values
-static char device_id[MAX_DEVICE_ID_LENGTH];
+static char device_id[MAX_UID_LENGTH];
 static user_array_t users_array;
 static bt_strengths_t bt_strengths;
+
+#define UPDATE_MASK_NO_UPDATES 0x0000
+#define UPDATE_MASK_USER_ARRAY (1ULL << 1)
+#define UPDATE_MASK_USER_NAMES (1ULL << 2)
+#define UPDATE_MASK_DEVICE_ID (1ULL << 3)
+
+#define add_to_update(mask) (update_mask |= mask)
+
+static uint16_t update_mask = UPDATE_MASK_NO_UPDATES;
+// store current state to nvs
+void _nvs_update() {
+  // user array
+  if (update_mask & UPDATE_MASK_USER_ARRAY) {
+  }
+  // user ids
+  if (update_mask & UPDATE_MASK_USER_NAMES) {
+  }
+  // device id
+  if (update_mask & UPDATE_MASK_DEVICE_ID) {
+  }
+  // clear update mask
+  update_mask = UPDATE_MASK_NO_UPDATES;
+}
 
 // initializes users
 // opens "users" namespace of NVS
@@ -34,7 +55,7 @@ esp_err_t users_init() {
     ESP_LOGI(TAG, "error opening users nvs: %s\n", esp_err_to_name(err));
 
   // get device id from memory
-  err = nvs_get_str(users_handle, DEVICE_ID_KEY, device_id, MAX_DEVICE_ID_LENGTH);
+  err = nvs_get_str(users_handle, DEVICE_ID_KEY, device_id, MAX_UID_LENGTH);
   switch (err) {
   case ESP_OK:
     ESP_LOGI(TAG, "Done\n");
@@ -42,7 +63,9 @@ esp_err_t users_init() {
     break;
   case ESP_ERR_NVS_NOT_FOUND:
     ESP_LOGI(TAG, "No device id found!\n");
-
+    ESP_LOGI(TAG, "Setting default device id: %s\n", DEVICE_ID_KEY);
+    strcpy(device_id, DEVICE_ID_KEY);
+    add_to_update(UPDATE_MASK_DEVICE_ID);
     break;
   default:
     ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
@@ -51,6 +74,21 @@ esp_err_t users_init() {
   // get users array from NVS
   size_t array_size = sizeof(user_array_t);
   err = nvs_get_blob(users_handle, USER_ARRAY_KEY, &users_array, array_size);
+
+  switch (err) {
+  case ESP_OK:
+    ESP_LOGI(TAG, "Done\n");
+    ESP_LOGI(TAG, "Users array retreived\n");
+    break;
+  case ESP_ERR_NVS_NOT_FOUND:
+    ESP_LOGI(TAG, "No user array found!\n");
+    ESP_LOGI(TAG, "Using default user array\n");
+    strcpy(users_array.users[0].id, device_id);
+    add_to_update(UPDATE_MASK_USER_ARRAY);
+    break;
+  default:
+    ESP_LOGI(TAG, "Error (%s) reading!\n", esp_err_to_name(err));
+  }
 
   // get user id's
   char user_string[] = "us0";
@@ -66,7 +104,6 @@ esp_err_t users_init() {
 void data_cache_add_user(char *new_user_id) {
   esp_err_t err;
   int index = users_array.length;
-  users_array.users[index].id = malloc(sizeof(char) * MAX_UID_LENGTH);
   strcpy(users_array.users[index].id, new_user_id);
 
   err = nvs_set_str(users_handle, USER_KEYS[index], users_array.users[index].id);
@@ -89,9 +126,7 @@ esp_err_t bt_strengths_init() {
   esp_err_t err = ESP_OK;
 
   for (int i = 0; i < MAX_USERS; i++) {
-    char uid_buffer[MAX_UID_LENGTH];
     bt_strengths.values[i].value = 0;
-    bt_strengths.values[i].uid = uid_buffer;
   }
 
   bt_strengths.length = 0;
