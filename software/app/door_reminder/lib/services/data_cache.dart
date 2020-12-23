@@ -143,7 +143,7 @@ class DataCache {
         .child('devices')
         .child(reminder.did)
         .child(reminder.uid)
-        .child(reminder.direction)
+        .child(reminder.direction.toLowerCase())
         .child('count');
 
     var currCount = dbCount.once();

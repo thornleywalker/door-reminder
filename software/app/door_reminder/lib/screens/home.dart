@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     }).toList(),
                   );
                 else
-                  return Text("loading");
+                  return Text("No Reminders to display :(");
               },
             ),
           ),
