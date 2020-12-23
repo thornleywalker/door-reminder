@@ -18,6 +18,7 @@
     "xhash": "c",
     "xtree": "c",
     "xutility": "c",
-    "xlocale": "c"
+    "xlocale": "c",
+    "locale": "c"
   }
 }
