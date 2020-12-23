@@ -14,5 +14,6 @@
 
 esp_err_t wifi_init();
 bool wifi_attempt_connect_to(char *ssid, char *pass);
+bool wifi_connected();
 
 #endif

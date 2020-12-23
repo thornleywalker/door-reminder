@@ -13,6 +13,8 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
+static const char *TAG = "dr_wifi";
+
 /* The examples use WiFi configuration that you can set via project configuration menu
 
    If you'd rather not, just change the below entries to strings with
@@ -32,8 +34,8 @@ static EventGroupHandle_t s_wifi_event_group;
 
 #define TEST_NEW_SSID "WeeFee"
 #define TEST_NEW_PASS "P@ssw0rd"
-
-static const char *TAG = "wifi";
+static bool wifi_connection_status = false;
+bool wifi_connected() { return wifi_connection_status; }
 
 static int s_retry_num = 0;
 /* Set the SSID and Password via project configuration, or can set directly here
@@ -91,6 +93,8 @@ static void event_handler(void *arg, esp_event_base_t event_base, int32_t event_
   } else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
     // ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
     // ESP_LOGI(TAG, "got ip:%s", ip4addr_ntoa(&event->ip_info.ip));
+    ESP_LOGI(TAG, "got connection");
+    wifi_connection_status = true;
     s_retry_num = 0;
     xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
   }
@@ -138,18 +142,18 @@ static void fast_scan(char *ssid, char *password) {
   /* xEventGroupWaitBits() returns the bits before the call returned, hence we can test which
    * event actually happened. */
   // if (bits & WIFI_CONNECTED_BIT) {
-  //     ESP_LOGI(TAG, "connected to ap SSID:%s password:%s",
-  //              TEST_NEW_SSID, TEST_NEW_PASS);
+  //   ESP_LOGI(TAG, "connected to ap SSID:%s password:%s", TEST_NEW_SSID, TEST_NEW_PASS);
   // } else if (bits & WIFI_FAIL_BIT) {
-  //     ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s",
-  //              TEST_NEW_SSID, TEST_NEW_PASS);
+  //   ESP_LOGI(TAG, "Failed to connect to SSID:%s, password:%s", TEST_NEW_SSID, TEST_NEW_PASS);
   // } else {
-  //     ESP_LOGE(TAG, "UNEXPECTED EVENT");
+  //   ESP_LOGE(TAG, "UNEXPECTED EVENT");
   // }
 
-  ESP_ERROR_CHECK(esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler));
-  ESP_ERROR_CHECK(esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler));
-  vEventGroupDelete(s_wifi_event_group);
+  // ESP_ERROR_CHECK(esp_event_handler_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, &event_handler));
+  // ESP_ERROR_CHECK(esp_event_handler_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, &event_handler));
+  // vEventGroupDelete(s_wifi_event_group);
+
+  ESP_LOGI(TAG, "fast_scan finished.");
 }
 
 esp_err_t wifi_init() {
