@@ -12,6 +12,12 @@
     "*.inc": "c",
     "*.h": "c",
     "*.c": "c",
-    "functional": "c"
+    "functional": "c",
+    "algorithm": "c",
+    "chrono": "c",
+    "xhash": "c",
+    "xtree": "c",
+    "xutility": "c",
+    "xlocale": "c"
   }
 }
