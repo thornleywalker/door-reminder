@@ -5,5 +5,5 @@ wifi - test disconnecting and reconnecting
 	- primary function: try to connect to previous ssids, if none succeed, return false
 bluetooth - figure out how to connect to a phone
 	- do transfer of ssid/pass combo (will need to be encrypted eventually)
-singleton - rename to data_cache
+data_cache
 	- add function to add user
