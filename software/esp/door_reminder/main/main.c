@@ -7,8 +7,10 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 
+#include "bluetooth.h"
+#include "data_cache.h"
 #include "database_proxy.h"
-#include "singleton.h"
+#include "sensor.h"
 #include "wifi.h"
 
 #include "esp_spi_flash.h"
@@ -17,28 +19,38 @@
 #include "freertos/task.h"
 #include <stdio.h>
 
+static const char *TAG = "main";
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
 
 void app_main() {
-  esp_err_t ret = nvs_flash_init();
+  esp_err_t err = nvs_flash_init();
 
-  if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
+  if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
     ESP_ERROR_CHECK(nvs_flash_erase());
-    ret = nvs_flash_init();
+    err = nvs_flash_init();
   }
-  ESP_ERROR_CHECK(ret);
+  ESP_ERROR_CHECK(err);
 
   // initializations
-  singleton_init();
+  err = data_cache_init(); // before wifi
+  err = wifi_init();       // after data cache, checks for existing ssid/pass
+  if (!wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD)) {
+    ESP_LOGW(TAG, "Could not connect to wifi\n");
+  }
 
-  // attempt to connect to wifi
-  wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD);
+  err = database_init();  // after wifi, needs wifi to connect
+  err = bluetooth_init(); // who knows
+  err = sensor_init();    // last, sensors hot when complete
 
-  testing_function();
-  while (true)
-    ; // infinite loop for testing
-      // database_login();
+  int count = 0;
+  // infinite loop for testing
+  while (true) {
+    if (count % 1000 == 0)
+      printf("count: %d\n", count++);
+    vTaskDelay(100);
+  }
+}
 
 #if false
     printf("Hello world!\n");
@@ -64,4 +76,3 @@ void app_main() {
     fflush(stdout);
     esp_restart();
 #endif
-}
