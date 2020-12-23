@@ -52,10 +52,10 @@ void app_main() {
         err = database_init();
     printf("count: %d\n", count++);
     vTaskDelay(1000 / portTICK_PERIOD_MS);
-    if (count % 10 == 0)
-      database_alert_users(ALERT_DIR_COMING);
-    if (count % 21 == 0)
-      database_alert_users(ALERT_DIR_GOING);
+    // if (count % 10 == 0)
+    //   database_alert_users(ALERT_DIR_COMING);
+    // if (count % 21 == 0)
+    //   database_alert_users(ALERT_DIR_GOING);
   }
 }
 
