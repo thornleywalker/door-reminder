@@ -19,7 +19,7 @@
 #include "freertos/task.h"
 #include <stdio.h>
 
-static const char *TAG = "main";
+static const char *TAG = "dr_main";
 #define TEST_WIFI "WeeFee"
 #define TEST_PASSWORD "P@ssw0rd"
 
@@ -30,6 +30,7 @@ void app_main() {
     ESP_ERROR_CHECK(nvs_flash_erase());
     err = nvs_flash_init();
   }
+  ESP_ERROR_CHECK(nvs_flash_erase());
   ESP_ERROR_CHECK(err);
 
   // initializations
@@ -38,17 +39,23 @@ void app_main() {
   if (!wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD)) {
     ESP_LOGW(TAG, "Could not connect to wifi\n");
   }
-
-  err = database_init();  // after wifi, needs wifi to connect
-  err = bluetooth_init(); // who knows
-  err = sensor_init();    // last, sensors hot when complete
+  if (wifi_connected())
+    err = database_init(); // after wifi, needs wifi to connect
+  err = bluetooth_init();  // who knows
+  err = sensor_init();     // last, sensors hot when complete
 
   int count = 0;
   // infinite loop for testing
   while (true) {
-    if (count % 1000 == 0)
-      printf("count: %d\n", count++);
-    vTaskDelay(100);
+    if (count == 5)
+      if (wifi_connected())
+        err = database_init();
+    printf("count: %d\n", count++);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    if (count % 10 == 0)
+      database_alert_users(ALERT_DIR_COMING);
+    if (count % 21 == 0)
+      database_alert_users(ALERT_DIR_GOING);
   }
 }
 
