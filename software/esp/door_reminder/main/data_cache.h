@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 #define MAX_USERS 16
-#define MAX_UID_LENGTH 20
+#define MAX_UID_LENGTH 32
 
 typedef struct user {
   char id[MAX_UID_LENGTH];
