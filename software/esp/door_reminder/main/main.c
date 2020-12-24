@@ -26,6 +26,7 @@ static const char *TAG = "dr_main";
 void app_main() {
   esp_err_t err = nvs_flash_init();
 
+  // initialize flash memory
   if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
     ESP_ERROR_CHECK(nvs_flash_erase());
     err = nvs_flash_init();
@@ -35,13 +36,11 @@ void app_main() {
 
   // initializations
   err = data_cache_init(); // before wifi
-  err = wifi_init();       // after data cache, checks for existing ssid/pass
-  if (!wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD)) {
+  err = wifi_init();       // after data cache, to check for existing ssid/pass
+  if (!wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD))
     ESP_LOGW(TAG, "Could not connect to wifi\n");
-  }
-  err = bluetooth_init(); // who knows
 
-  // infinite loop for testing
+  // await wifi connection before database connection
   while (true) {
     vTaskDelay(500 / portTICK_PERIOD_MS);
     if (wifi_connected()) {
@@ -49,17 +48,16 @@ void app_main() {
       break;
     }
   }
+  err = bluetooth_init(); // who knows
+
   err = sensor_init(); // last, sensors hot when complete
 
+  // main function, idle until interrupt
   printf("\n\r");
   int count = 0;
   while (count <= 10) {
     vTaskDelay(1000 / portTICK_PERIOD_MS);
     ESP_LOGI(TAG, "count: %d", count++);
-    // if (count % 10 == 0)
-    //   database_alert_users(ALERT_DIR_COMING);
-    // if (count % 21 == 0)
-    //   database_alert_users(ALERT_DIR_GOING);
   }
   while (true) {
     vTaskDelay(1000 / portTICK_PERIOD_MS);
