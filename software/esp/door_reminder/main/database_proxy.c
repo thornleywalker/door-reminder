@@ -237,6 +237,8 @@ esp_err_t database_init() {
   return ESP_OK;
 }
 
+esp_http_client_handle_t flag_setter_client;
+
 // sets corresponding flag in database
 void set_reminder_flag(char *user_id, alert_dir_t direction) {
   char *dir_string;
@@ -253,12 +255,13 @@ void set_reminder_flag(char *user_id, alert_dir_t direction) {
   sprintf(device_flag_url, "%s%s%s%s%s%s%s%s%s", FIREBASE_REST_BASE, FIREBASE_REST_DEVICES, "/",
           data_cache_get_device_id(), "/", user_id, "/", dir_string, FIREBASE_REST_SUFFIX);
 
-  esp_http_client_set_url(firebase_rest_handle, device_flag_url);
+  // create a second http client for setting flags as from getting updates
+  esp_http_client_set_url(flag_setter_client, device_flag_url);
   const char *post_data = "{\"flag\":true}";
-  esp_http_client_set_header(firebase_rest_handle, "Content-Type", "application/json");
-  esp_http_client_set_post_field(firebase_rest_handle, post_data, strlen(post_data));
+  esp_http_client_set_header(flag_setter_client, "Content-Type", "application/json");
+  esp_http_client_set_post_field(flag_setter_client, post_data, strlen(post_data));
   // perform get
-  esp_http_client_perform(firebase_rest_handle);
+  esp_http_client_perform(flag_setter_client);
 
   ESP_LOGI(TAG, "reminder flag set");
 }
@@ -274,7 +277,7 @@ esp_err_t database_alert_users(alert_dir_t direction) {
                                      .user_data = response_buffer,
                                      .disable_auto_redirect = true};
   // setup client
-  firebase_rest_handle = esp_http_client_init(&config);
+  flag_setter_client = esp_http_client_init(&config);
 
   for (int i = 0; i < users_array_h->length; i++) {
     if ((direction & ALERT_DIR_COMING) && users_array_h->users[i].has_coming_reminders)
@@ -284,7 +287,7 @@ esp_err_t database_alert_users(alert_dir_t direction) {
       set_reminder_flag(users_array_h->users[i].id, direction);
   }
 
-  esp_http_client_cleanup(firebase_rest_handle);
+  esp_http_client_cleanup(flag_setter_client);
 
   ESP_LOGI(TAG, "users alerted");
 
