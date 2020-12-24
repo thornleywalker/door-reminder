@@ -39,23 +39,32 @@ void app_main() {
   if (!wifi_attempt_connect_to(TEST_WIFI, TEST_PASSWORD)) {
     ESP_LOGW(TAG, "Could not connect to wifi\n");
   }
-  if (wifi_connected())
-    err = database_init(); // after wifi, needs wifi to connect
-  err = bluetooth_init();  // who knows
-  err = sensor_init();     // last, sensors hot when complete
+  err = bluetooth_init(); // who knows
+  err = sensor_init();    // last, sensors hot when complete
 
-  int count = 0;
   // infinite loop for testing
   while (true) {
-    if (count == 5)
-      if (wifi_connected())
-        err = database_init();
-    printf("count: %d\n", count++);
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+    if (wifi_connected()) {
+      err = database_init();
+      break;
+    }
+  }
+
+  printf("\n\r");
+  int count = 0;
+  while (count <= 10) {
     vTaskDelay(1000 / portTICK_PERIOD_MS);
+    ESP_LOGI(TAG, "count: %d", count++);
     // if (count % 10 == 0)
     //   database_alert_users(ALERT_DIR_COMING);
     // if (count % 21 == 0)
     //   database_alert_users(ALERT_DIR_GOING);
+  }
+  while (true) {
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    if (++count % 5 == 0)
+      ESP_LOGI(TAG, "count: %d", count++);
   }
 }
 
