@@ -1,3 +1,6 @@
+Firebase
+  - add api key so only a device can edit
+
 database_proxy
 wifi
   - test disconnecting and reconnecting
@@ -9,5 +12,3 @@ bluetooth
 data_cache
 	- add function to add user
 sensor
-  - create task to deal with button presses (interrupts)
-  - change isr's to send task notifications to this task
