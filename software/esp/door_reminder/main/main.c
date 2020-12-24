@@ -40,7 +40,6 @@ void app_main() {
     ESP_LOGW(TAG, "Could not connect to wifi\n");
   }
   err = bluetooth_init(); // who knows
-  err = sensor_init();    // last, sensors hot when complete
 
   // infinite loop for testing
   while (true) {
@@ -50,6 +49,7 @@ void app_main() {
       break;
     }
   }
+  err = sensor_init(); // last, sensors hot when complete
 
   printf("\n\r");
   int count = 0;
