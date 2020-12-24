@@ -6,21 +6,21 @@
 
 static const char *TAG = "dr_sensor";
 
-#define GOING_INPUT 2
-#define COMING_INPUT 3
+#define GOING_INPUT GPIO_NUM_22
+#define COMING_INPUT GPIO_NUM_2
 #define INPUT_PIN_SELECT ((1ULL << GOING_INPUT) | (1ULL << COMING_INPUT))
 #define ESP_INTR_FLAG_DEFAULT 0
 
 void going_isr() {
-  ESP_LOGI(TAG, "interrupt detected\n");
+  // ESP_LOGI(TAG, "interrupt detected on 22\n");
   database_alert_users(ALERT_DIR_GOING);
-  ESP_LOGI(TAG, "interrupt executed\n");
+  // ESP_LOGI(TAG, "interrupt executed\n");
 }
 
 void coming_isr() {
-  ESP_LOGI(TAG, "interrupt detected\n");
+  // ESP_LOGI(TAG, "interrupt detected on 2\n");
   database_alert_users(ALERT_DIR_COMING);
-  ESP_LOGI(TAG, "interrupt executed\n");
+  // ESP_LOGI(TAG, "interrupt executed\n");
 }
 
 // sets up pin for input, registers isr
@@ -28,19 +28,12 @@ esp_err_t sensor_init() {
   ESP_LOGI(TAG, "initializing sensor");
 
   gpio_config_t cnfg = {
-      .intr_type = GPIO_INTR_NEGEDGE,
+      .intr_type = GPIO_INTR_POSEDGE,
       .mode = GPIO_MODE_INPUT,
       .pin_bit_mask = INPUT_PIN_SELECT,
-      .pull_down_en = GPIO_PULLDOWN_DISABLE,
-      .pull_up_en = GPIO_PULLUP_ENABLE,
+      .pull_down_en = GPIO_PULLDOWN_ENABLE,
+      .pull_up_en = GPIO_PULLUP_DISABLE,
   };
-
-  // ir sensor config
-  // cnfg.intr_type = GPIO_INTR_NEGEDGE;
-  // cnfg.mode = GPIO_MODE_INPUT;
-  // cnfg.pin_bit_mask = INPUT_PIN_SELECT;
-  // cnfg.pull_down_en = GPIO_PULLDOWN_DISABLE;
-  // cnfg.pull_up_en = GPIO_PULLUP_ENABLE;
 
   esp_err_t err;
 
