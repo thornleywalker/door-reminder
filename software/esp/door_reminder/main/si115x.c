@@ -122,10 +122,21 @@ enum ADCMUX {
   WHITE = 0b01011,
   LRG_WHITE = 0b01101
 };
+
+// 7.2.1
 #define _DECIM_RATE(n) (n << 4)
 #define ADCCONFIG(decim_rate, adcmux) (_DECIM_RATE(decim_rate) | adcmux)
 
+// 7.2.2
 enum HSIG { NORMAL = 0b0, HIGH = 0b1 };
-#define ADCSENS(hsig, sw_gain, hw_gain) (hsig << 7 |)
+#define ADCSENS(hsig, sw_gain, hw_gain) (hsig << 7 | sw_gain << 4 | hw_gain)
 
-// Verify all commands with a read to RESPONSE0
+// 7.2.3
+#define ADCPOST(rsrvd, bit_out_24, post_shift, thresh_pol, thresh_sel)                             \
+  (rsrvd << 7 | bit_out_24 << 6 | post_shift << 3 | thresh_pol << 2 | thresh_sel)
+
+// 7.2.4
+#define MEASCONFIG(counter_index, led_trim, bank_sel, led2_en, led3_en, led1_en)                   \
+  (counter_index << 6 | led_trim << 4 | bank_sel << 3 | led2_en << 2 | led3_en << 1 | led1_en)
+
+// Verify each command with a read to RESPONSE0
