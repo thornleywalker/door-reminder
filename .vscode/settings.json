@@ -6,6 +6,13 @@
       "thread": "c",
       "xlocale": "c",
       "*.ipp": "c",
-      "*.inc": "c"
+      "*.inc": "c",
+      "random": "cpp",
+      "i2c.h": "c",
+      "freertos.h": "c",
+      "portable.h": "c",
+      "portmacro.h": "c",
+      "esp_newlib.h": "c",
+      "reent.h": "c"
     }
 }
