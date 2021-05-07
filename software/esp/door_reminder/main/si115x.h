@@ -110,10 +110,10 @@ typedef enum {
   MEASRATE_H = 0x1A, // Governs time between measurement periods
   MEASRATE_L = 0x1B,
   // MEASCOUNT
-  MEASCOUNT1 = 0x1C, // Controls the number of periods between measurements
-  MEASCOUNT2 = 0x1D,
-  MEASCOUNT3 = 0x1E,
-  // LED Setup
+  MEASCOUNT0 = 0x1C, // Controls the number of periods between measurements
+  MEASCOUNT1 = 0x1D, // these change between 0-index and 1-index in the ref sheet
+  MEASCOUNT2 = 0x1E,
+  // LED Current Setup, see table 8.8
   LED1_A = 0x1F,
   LED1_B = 0x20,
   LED3_A = 0x21,
@@ -133,6 +133,76 @@ typedef enum {
   // BURST
   BURST = 0x2B,
 } parameter_t;
+
+// LED current codes
+enum LED_CURR_LEVELS {
+  L0_5_5 = 0X00,
+  L1_11 = 0X08,
+  L2_17 = 0X10,
+  L3_22 = 0X18,
+  L4_28 = 0X20,
+  L5_33 = 0X28,
+  L6_39 = 0X30,
+  L7_44 = 0X38,
+  L8_50 = 0X12,
+  L9_55 = 0X21,
+  L10_66 = 0X29,
+  L11_77 = 0X31,
+  L12_83 = 0X22,
+  L13_88 = 0X39,
+  L14_100 = 0X2A,
+  L15_111 = 0X23,
+  L16_116 = 0X32,
+  L17_133 = 0X3A,
+  L18_138 = 0X24,
+  L19_155 = 0X33,
+  L20_166 = 0X2C,
+  L21_177 = 0X3B,
+  L22_194 = 0X34,
+  L23_199 = 0X2D,
+  L24_221 = 0X3C,
+  L25_232 = 0X35,
+  L26_265 = 0X3D,
+  L27_271 = 0X36,
+  L28_301 = 0X3E,
+  L29_354 = 0X3F
+};
+
+typedef union {
+  uint16_t val;
+  struct {
+    char hi;
+    char lo;
+  } parts;
+} hi_lo_16_t;
+
+// channel configuration struct
+typedef struct {
+  uint8_t adcconfig;
+  uint8_t adcsens;
+  uint8_t adcpost;
+  uint8_t measconfig;
+} chan_config_t;
+
+// LED banks struct
+typedef struct {
+  uint8_t a;
+  uint8_t b;
+} led_curr_t;
+
+// struct for convenience of storage and tracking
+typedef struct {
+  uint8_t i2c_addr;
+  uint8_t chan_list;
+  chan_config_t channel[6];
+  hi_lo_16_t measrate;
+  uint8_t meascount[3];
+  led_curr_t led[3]; // NOTICE: These are ordered {1, 3, 2} in the param table
+  hi_lo_16_t threshold[2];
+  hi_lo_16_t upper_threshold;
+  uint8_t burst;
+  hi_lo_16_t lower_threshold;
+} param_table_t;
 
 // ADCCONFIG
 enum ADCCONFIG_DECIM_RATE { DECIM_0, DECIM_1, DECIM_2, DECIM_3 };
@@ -172,19 +242,24 @@ enum ADCPOST_THRESH_EN { // see 6.4
 enum MEASCONFIG_COUNTER_INDEX { BURST_FORCED = 0, MC_0 = 1, MC_1 = 2, MC_2 = 3 };
 enum MEASCONFIG_LED_TRIM { NOMINAL = 0, INC_9 = 2, DEC_10 = 3 };
 enum MEASCONFIG_BANK_SEL { BANK_A = 0, BANK_B = 1 };
-enum MEASCONFIG_LEDS { LED_1 = 1, LED_2 = 2, LED_ = 4 };
+enum MEASCONFIG_LEDS { LED_1 = 1, LED_2 = 4, LED_3 = 2 };
 #define MEASCONFIG(counter_index, led_trim, bank_sel, leds)                                        \
   (counter_index << 6 | led_trim << 4 | bank_sel << 3 | leds)
 
+// Performs all necessary initializations
+void si115x_init(int port_num, int sda_pin, int scl_pin, int freq);
+
 // Configures the given channel and enables it
 // args:
-//   channel     - the channel to apply the configuration to
-//   adc_config  - the adc configuration to use (use ADCCONFIG macro) - see 7.2.1
-//   adc_sens    - the adc sensor gains to use (use ADCSENS macro) - see 7.2.2
-//   adc_post    - the adc threshold configuration to use (use ADCPOST macro) - see 7.2.3
-//   meas_config - the measurement/LED configuration to use (use MEASCONFIG macro) - see 7.2.4
+//  i2c_address - i2c address of the device
+//  channel     - the channel to apply the configuration to
+//  adc_config  - the adc configuration to use (use ADCCONFIG macro) - see 7.2.1
+//  adc_sens    - the adc sensor gains to use (use ADCSENS macro) - see 7.2.2
+//  adc_post    - the adc threshold configuration to use (use ADCPOST macro) - see 7.2.3
+//  meas_config - the measurement/LED configuration to use (use MEASCONFIG macro) - see 7.2.4
 // example usage:
 //     si115x_channel_config(
+//         0x52,
 //         2,
 //         ADCCONFIG(DECIM_0, LRG_IR),
 //         ADCSENS(NORMAL_GAIN, 3, 7),
