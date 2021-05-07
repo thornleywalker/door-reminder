@@ -5,6 +5,25 @@
 ////////////////////////////////////////////
 #include "driver/i2c.h"
 
+static int i2c_master_port = 0;
+
+// Performs all necessary initializations
+void si115x_init(int port_num, int sda_pin, int scl_pin, int freq) {
+  // Initialize i2c
+  i2c_master_port = port_num;
+  i2c_config_t conf = {
+      .mode = I2C_MODE_MASTER,
+      .sda_io_num = sda_pin, // select GPIO specific to your project
+      .sda_pullup_en = GPIO_PULLUP_ENABLE,
+      .scl_io_num = scl_pin, // select GPIO specific to your project
+      .scl_pullup_en = GPIO_PULLUP_ENABLE,
+      .master.clk_speed = freq // select frequency specific to your project
+  };
+  i2c_param_config(i2c_master_port, conf);
+
+  i2c_driver_install(i2c_master_port, I2C_MODE_MASTER, 0, 0, 0);
+}
+
 // Wrapper for i2c function
 // Reads the current register value
 // args:
@@ -21,7 +40,7 @@ inline void si115x_write_reg(char i2c_address, char reg_address, char value) {
   i2c_master_write_byte(cmd, value, 1);
   i2c_master_stop(cmd);
 
-  i2c_master_cmd_begin(0, cmd, pdMS_TO_TICKS(50));
+  i2c_master_cmd_begin(i2c_master_port, cmd, pdMS_TO_TICKS(50));
   i2c_cmd_link_delete(cmd);
 }
 
@@ -43,7 +62,7 @@ inline void si115x_read_reg(char i2c_address, char reg_address, char *buf) {
   i2c_master_read_byte(cmd, buf, 1);
   i2c_master_stop(cmd);
 
-  i2c_master_cmd_begin(0, cmd, pdMS_TO_TICKS(50));
+  i2c_master_cmd_begin(i2c_master_port, cmd, pdMS_TO_TICKS(50));
   i2c_cmd_link_delete(cmd);
 }
 //////////////////////////////////////////
@@ -59,6 +78,7 @@ inline void si115x_read_reg(char i2c_address, char reg_address, char *buf) {
 //   meas_config - the measurement/LED configuration to use (use MEASCONFIG macro) - see 7.2.4
 // example usage:
 //     si115x_channel_config(
+//         0x52,
 //         2,
 //         ADCCONFIG(DECIM_0, LRG_IR),
 //         ADCSENS(NORMAL_GAIN, 3, 7),
@@ -67,6 +87,7 @@ inline void si115x_read_reg(char i2c_address, char reg_address, char *buf) {
 //         );
 void si115x_channel_config(int i2c_address, int channel, char adc_config, char adc_sens,
                            char adc_post, char meas_config) {
+  // Check for valid channel
   if (channel >= 0 && channel <= 5) {
     int channel_offset = 0x02 + (channel * 0x04);
     si115x_write_param(i2c_address, channel_offset++, adc_config);
