@@ -1,8 +1,29 @@
 [package]
 name = "doorsi"
 version = "0.1.0"
-edition = "2021"
+authors = ["Walker Thornley"]
+edition = "2018"
+resolver = "2"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+opt-level = "s"
+
+[profile.dev]
+debug = true # Symbols are nice and they don't increase the size on Flash
+opt-level = "z"
+
+[features]
+native = ["esp-idf-sys/native"]
 
 [dependencies]
+esp-idf-sys = { version = "0.27", features = ["binstart"] }
+embedded-svc = "0.15"
+esp-idf-svc = "0.32"
+esp-idf-hal = "0.27"
+embedded-hal = "0.2"
+chrono = "0.4"
+
+
+[build-dependencies]
+embuild = "0.25"
+anyhow = "1"
