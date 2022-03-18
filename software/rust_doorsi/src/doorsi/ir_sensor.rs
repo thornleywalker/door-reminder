@@ -1,15 +1,21 @@
 use esp_idf_sys::*;
-use esp_idf_hal::{i2c, gpio, prelude::*};
+use esp_idf_hal::{i2c::{self, I2c, I2C0, Master, MasterPins}, gpio::*, prelude::*};
+use log::*;
 use si115x::*;
+
+type SdaPin = Gpio4<Unknown>;
+type SclPin = Gpio16<Unknown>;
 
 pub struct IrSensor {
     address: u8,
 }
+
 impl IrSensor {
-    pub fn new(
+    pub fn new<I: I2c, A: OutputPin + InputPin, L: OutputPin>(
         addr: u8,
-        i2c: &mut i2c::Master<i2c::I2C0, gpio::Gpio4<gpio::Unknown>, gpio::Gpio15<gpio::Unknown>>,
-    ) -> Self {
+        i2c: &mut Master<I, A, L>,
+    ) -> Result<Self, EspError> {
+        info!("Creating IR Sensor at {}", addr);
         let channel = Channel::new(
             AdcConfig::new(
                 DecimRate::Clks1024,
@@ -39,54 +45,64 @@ impl IrSensor {
             address: addr,
         };
 
+        info!("command vec defined");
         let command_vec = [
             (Command::ParamSet(Parameter::ADCConfig0), Some(channel.adc_config.into())),
             (Command::ParamSet(Parameter::ADCSens0), Some(channel.adc_sens.into())),
             (Command::ParamSet(Parameter::ADCPost0), Some(channel.adc_post.into())),
             (Command::ParamSet(Parameter::MeasConfig0), Some(channel.meas_config.into()))
             ];
+        info!("command vec defined");
 
+        info!("Executing commands");
         for (command, val) in command_vec {
-            let resp = ret_val.do_command(i2c, command, val);
+            let resp = ret_val.do_command(i2c, command, val)?;
             match resp.status.cmd_ctr {
-                Err(e) => panic!(),
+                Err(e) => error!("i2c command didn't work :/"),
                 _ => {}
             }
         }
 
-        ret_val
+        info!("IR Sensor created");
+        Ok(ret_val)
     }
-    fn do_command(
+    fn do_command<I: I2c, A: OutputPin + InputPin, L: OutputPin>(
         &self,
-        i2c: &mut i2c::Master<i2c::I2C0, gpio::Gpio4<gpio::Unknown>, gpio::Gpio15<gpio::Unknown>>,
+        i2c: &mut Master<I, A, L>,
         command: Command,
         value: Option<u8>
-    ) -> Response {
+    ) -> Result<Response, EspError> {
+        info!("Beginning command");
         // Read Resonse0 reg, store command counter
         let bytes = [Register::Response0.into()];
+        info!("Got here0.1");
         let mut buffer = [0; 1];
-        i2c.write_read(self.address, &bytes, &mut buffer).unwrap();
+        info!("Got here0.2");
+        i2c.write_read(self.address, &bytes, &mut buffer)?;
 
+        info!("Got here1");
         let pre_response0 = Response0::from(buffer[0]);
         let mut pre_count = 0;
         match pre_response0.cmd_ctr {
             Ok(count) => pre_count = count,
-            Err(e) => return Response { value: 0, status: pre_response0 },
+            Err(e) => return Ok(Response { value: 0, status: pre_response0 }),
         }
+        info!("Got here2");
 
         // write value to Hostin reg (option)
         // write command to Command reg
         match value {
             Some(val) => {
                 let bytes = [Register::HostIn0.into(), val, command.into()];
-                i2c.write(self.address, &bytes).unwrap();
+                i2c.write(self.address, &bytes)?;
             },
             None => {
                 let bytes = [Register::Command.into(), command.into()];
-                i2c.write(self.address, &bytes).unwrap();
+                i2c.write(self.address, &bytes)?;
             },
         };
-        i2c.write(self.address, &bytes).unwrap();
+        i2c.write(self.address, &bytes)?;
+        info!("Got here3");
 
         // Read Response0 reg, check command counter incremented
         let bytes = [Register::Response1.into()];
@@ -102,43 +118,46 @@ impl IrSensor {
                 Err(e) => break,
             }
         }
+        info!("Got here4");
 
+        info!("Command completed");
         // Repeat until counter increments, or error
-        Response {
+        Ok(Response {
             value: buffer[0],
             status: buffer[1].into(),
-        }
+        })
     }
 }
 
 pub struct IrManager {
-    i2c_master: i2c::Master<i2c::I2C0, gpio::Gpio4<gpio::Unknown>, gpio::Gpio15<gpio::Unknown>>,
+    i2c_master: Master<I2C0, SdaPin, SclPin>,
     left_ir: IrSensor,
     right_ir: IrSensor,
 }
 impl IrManager {
     // creates and initializes the ir sensors
     pub fn new(
-        i2c: i2c::I2C0,
-        sda: gpio::Gpio4<gpio::Unknown>,
-        scl: gpio::Gpio15<gpio::Unknown>
-    ) -> Self {
+        i2c: I2C0,
+        sda: SdaPin,
+        scl: SclPin,
+    ) -> Result<Self, EspError> {
+        info!("Creating IR Manager");
         let config = <i2c::config::MasterConfig as Default>::default().baudrate(400.kHz().into());
-        let mut i2c_master = i2c::Master::<i2c::I2C0, _, _>::new(
+        let mut i2c_master = Master::<I2C0, _, _>::new(
             i2c,
-            i2c::MasterPins { sda, scl },
+            MasterPins { sda, scl },
             config,
-        ).unwrap();
+        )?;
         
         // do initialization of sensors
-        let left_ir = IrSensor::new(53, &mut i2c_master);
-        let right_ir = IrSensor::new(52, &mut i2c_master);
+        let left_ir = IrSensor::new(52, &mut i2c_master)?;
+        let right_ir = IrSensor::new(51, &mut i2c_master)?;
 
-        Self {
+        Ok(Self {
             i2c_master: i2c_master,
             left_ir: left_ir,
             right_ir: right_ir,
-        }
+        })
     }
 }
 

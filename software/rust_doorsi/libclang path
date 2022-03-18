@@ -1,0 +1,1 @@
+export LIBCLANG_PATH=~/.espressif/tools/xtensa-esp32-elf-clang/esp-12.0.1-20210914-x86_64-unknown-linux-gnu/lib/

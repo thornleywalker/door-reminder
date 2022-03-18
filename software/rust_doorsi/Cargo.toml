@@ -21,8 +21,8 @@ embedded-svc = "0.15"
 esp-idf-svc = "0.32"
 esp-idf-hal = "0.27"
 embedded-hal = "0.2"
+log = "0.4"
 chrono = "0.4"
-
 
 [build-dependencies]
 embuild = "0.25"

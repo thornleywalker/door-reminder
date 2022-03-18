@@ -7,51 +7,65 @@ mod ir_sensor;
 mod reminder;
 mod user;
 
+use chrono::{Date, DateTime, Timelike, Utc};
+use esp_idf_hal::{gpio::*, i2c, peripherals::Peripherals};
+use esp_idf_sys::*;
+use log::*;
 use std::collections::HashMap;
-use chrono::{DateTime, Date, Utc, Timelike};
-use esp_idf_hal::peripherals::Peripherals;
 
 use bluetooth::*;
 use db_proxy::*;
 use ir_sensor::*;
-use reminder::*;
+use reminder::Reminder;
 use user::*;
 
 pub struct Doorsi {
     pub users: HashMap<String, User>,
     active_reminders: Vec<Reminder>,
-    ir_manager: IrManager,
+    //ir_manager: IrManager,
     db_proxy: DbProxy,
     bluetooth_manager: BluetoothManager,
 }
 impl Doorsi {
-    pub fn new() -> Self {
+    pub fn new() -> Result<Self, EspError> {
+        info!("Initializing Doorsi");
         let peripherals = Peripherals::take().unwrap();
         let pins = peripherals.pins;
-        
+        info!("Peripherals acquired");
+
         // db proxy
+        let mut db_proxy = DbProxy {};
 
         // users
         let mut users = vec![];
         users.push(User::new("default_id".to_string()));
+        info!("Users created");
 
         // bt manager
         let mut bt_man = BluetoothManager::new(&users);
+        info!("Bluetooth manager created");
 
-        Doorsi {
+        Ok(Doorsi {
             users: HashMap::new(),
             active_reminders: vec![],
-            ir_manager: IrManager::new(peripherals.i2c0, pins.gpio4, pins.gpio15),  // check that these are the pins
-            db_proxy: DbProxy{},
+            //ir_manager: IrManager::new(peripherals.i2c0, pins.gpio4, pins.gpio16)?,  // check that these are the pins
+            db_proxy: db_proxy,
             bluetooth_manager: bt_man,
-        }
+        })
     }
     pub fn run(self) -> ! {
-        loop {
-            
-        }
+        info!("Beginning Doorsi");
+        loop {}
     }
-    pub fn activate_reminders(&self, user_power_levels: Vec<(UserId, BluetoothPower)>) -> Vec<Reminder> {
+    // general trigger function. Can occur on button press, door contact, ir sensor, etc.
+    pub fn trigger(&mut self) {
+        // get all active reminders
+        // for each active reminder, send a notification
+    }
+    pub fn activate_reminders(
+        &self,
+        user_power_levels: Vec<(UserId, BluetoothPower)>,
+    ) -> Vec<Reminder> {
         let mut ret_vec = vec![];
         for (user_id, power) in user_power_levels {
             let temp_user = &self.users[&user_id];
@@ -64,8 +78,7 @@ impl Doorsi {
         ret_vec
     }
 
-    pub fn update_active_list(&mut self, now: DateTime<Utc>)
-    {
+    pub fn update_active_list(&mut self, now: DateTime<Utc>) {
         // remove non active reminders
         for i in 0..self.active_reminders.len() {
             if self.active_reminders[i].is_active(&now) {

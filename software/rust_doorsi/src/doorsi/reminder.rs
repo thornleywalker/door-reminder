@@ -1,16 +1,13 @@
-use chrono::{DateTime, Date, Utc, Timelike};
+use chrono::{DateTime, NaiveDate, NaiveDateTime, NaiveTime};
 
 #[derive(Clone)]
-pub struct  Reminder {
+pub struct Reminder {
     id: String,
     pub user_id: String,
     title: String,
     body: String,
     direction: Direction,
-    start_date: Date<Utc>,
-    stop_date: Date<Utc>,
-    repetition: Repetition,
-    day_schedule: DaySchedule,
+    schedule: Schedule,
 }
 impl Reminder {
     pub fn new(
@@ -19,10 +16,7 @@ impl Reminder {
         title: String,
         body: String,
         direction: Direction,
-        start_date: Date<Utc>,
-        stop_date: Date<Utc>,
-        repetition: Repetition,
-        day_schedule: DaySchedule,
+        schedule: Schedule,
     ) -> Self {
         Reminder {
             id: reminder_id,
@@ -30,16 +24,14 @@ impl Reminder {
             title: title,
             body: body,
             direction: direction,
-            start_date: start_date,
-            stop_date: stop_date,
-            repetition: repetition,
-            day_schedule: day_schedule,
+            schedule: schedule,
         }
     }
-    pub fn is_active(&self, now: &DateTime<Utc>) -> bool
-    {
-        ((now.date() > self.start_date) && (now.date() < self.stop_date)) &&
-        self.day_schedule.is_active(now.time().hour() as Hour)
+    pub fn trigger(&mut self) {
+        if self.is_active() {}
+    }
+    fn is_active(&self) -> bool {
+        false
     }
 }
 
@@ -50,13 +42,20 @@ pub enum Direction {
     Both,
 }
 
+pub struct Schedule {
+    start_date: NaiveDate,
+    stop_date: NaiveDate,
+    day_schedule: DaySchedule,
+    repetition: Repetition,
+}
+
 #[derive(Clone)]
 pub enum Repetition {
     OnceDaily,
     Daily,
-    Weekly(Weekday),
-    Monthly(u8),
-    Yearly(u16),
+    Weekly(Weekdays),
+    Monthly(u8), // day of the month
+    Yearly(u16), // day of the year
 }
 
 type Hour = u8;
@@ -69,20 +68,20 @@ pub struct DaySchedule {
 impl DaySchedule {
     pub fn new(start_hour: Hour, stop_hour: Hour) -> Self {
         DaySchedule {
-            start_hour: 0,
-            stop_hour: 0,
+            start_hour: start_hour,
+            stop_hour: stop_hour,
         }
     }
     pub fn is_active(&self, curr_hour: Hour) -> bool {
-        self.start_hour < curr_hour && self.stop_hour > curr_hour
+        self.start_hour <= curr_hour && curr_hour < self.stop_hour
     }
 }
 
 #[derive(Clone)]
-pub struct Weekday {
-    _internal: Hour,
+pub struct Weekdays {
+    _internal: u8,
 }
-impl Weekday {
+impl Weekdays {
     pub fn new(
         sun: bool,
         mon: bool,
@@ -92,7 +91,7 @@ impl Weekday {
         fri: bool,
         sat: bool,
     ) -> Self {
-        let mut ret_val = Weekday { _internal: 0 };
+        let mut ret_val = Weekdays { _internal: 0 };
         ret_val.set_sun(sun);
         ret_val.set_mon(mon);
         ret_val.set_tue(tue);
